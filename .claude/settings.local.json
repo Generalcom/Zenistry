@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:/Users/suppo/Documents/AI/new_websuite/app/\\(app\\)/\")",
+      "Bash(find C:/Users/suppo/Documents/AI/new_websuite -maxdepth 1 -name .env* -type f)",
+      "Bash(grep \"\\\\.tsx$\")",
+      "Bash(grep \"\\\\.ts$\")",
+      "Bash(sed 's/=.*//')"
+    ]
+  }
+}
