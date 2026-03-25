@@ -10,11 +10,11 @@ import { useCart } from '@/hooks/use-cart'
 
 const navLinks = [
   { href: '/shop', label: 'Shop' },
-  { href: '#categories', label: 'Categories' },
-  { href: '#about', label: 'About' },
-  { href: '#podcast', label: 'Podcast' },
-  { href: '#reviews', label: 'Reviews' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#categories', label: 'Categories' },
+  { href: '/#about', label: 'About' },
+  { href: '/#podcast', label: 'Podcast' },
+  { href: '/#reviews', label: 'Reviews' },
+  { href: '/track', label: 'Track Order' },
 ]
 
 export function Header() {

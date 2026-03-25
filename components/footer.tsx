@@ -19,9 +19,9 @@ const footerLinks = {
     { label: "Reviews", href: "/#reviews" },
   ],
   support: [
+    { label: "Track My Order", href: "/track" },
     { label: "Contact Angela", href: "tel:0828277990" },
     { label: "WhatsApp Us", href: "https://wa.me/27828277990" },
-    { label: "Shipping Info", href: "/#contact" },
     { label: "Returns", href: "/#contact" },
   ],
   legal: [

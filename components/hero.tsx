@@ -74,13 +74,13 @@ export function Hero() {
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="font-serif text-3xl font-semibold text-foreground">10K+</p>
-                <p className="text-sm text-muted-foreground">Happy Clients</p>
+                <p className="font-serif text-3xl font-semibold text-foreground">8</p>
+                <p className="text-sm text-muted-foreground">Products</p>
               </div>
               <div className="w-px h-12 bg-border" />
               <div className="text-center">
-                <p className="font-serif text-3xl font-semibold text-foreground">50+</p>
-                <p className="text-sm text-muted-foreground">Products</p>
+                <p className="font-serif text-3xl font-semibold text-foreground">SA</p>
+                <p className="text-sm text-muted-foreground">Handcrafted</p>
               </div>
             </div>
           </div>
