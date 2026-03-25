@@ -9,7 +9,7 @@ import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { WhatsAppOrderButton } from '@/components/whatsapp-button'
 import { useCart } from '@/hooks/use-cart'
-import { getProductById, products } from '@/lib/products'
+import { useProduct, useProducts } from '@/hooks/use-products'
 import { toast } from 'sonner'
 import {
   Star,
@@ -22,15 +22,15 @@ import {
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
-  const product = getProductById(id)
-
-  if (!product) notFound()
-
+  const product = useProduct(id)
+  const allProducts = useProducts()
   const { addToCart } = useCart()
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
 
-  const relatedProducts = products
+  if (!product) return null
+
+  const relatedProducts = allProducts
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 3)
 

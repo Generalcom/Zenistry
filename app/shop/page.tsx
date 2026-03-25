@@ -9,7 +9,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
 import { useCart } from '@/hooks/use-cart'
-import { products } from '@/lib/products'
+import { useProducts } from '@/hooks/use-products'
 import { toast } from 'sonner'
 import { Star, ChevronLeft, Heart, SlidersHorizontal } from 'lucide-react'
 
@@ -17,6 +17,7 @@ const categoryFilters = ['All', 'Wellness Honey', 'Skincare', 'Body Care', 'Arom
 
 function ShopContent() {
   const { addToCart } = useCart()
+  const products = useProducts()
   const searchParams = useSearchParams()
   const [addedItems, setAddedItems] = useState<string[]>([])
 

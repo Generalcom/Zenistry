@@ -6,11 +6,12 @@ import Link from "next/link"
 import { Heart, ChevronLeft, ChevronRight, ArrowRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/hooks/use-cart"
-import { products } from "@/lib/products"
+import { useProducts } from "@/hooks/use-products"
 import { toast } from "sonner"
 
 export function FeaturedProducts() {
   const { addToCart } = useCart()
+  const products = useProducts()
   const [visibleProducts, setVisibleProducts] = useState<string[]>([])
   const [addedItems, setAddedItems] = useState<string[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)

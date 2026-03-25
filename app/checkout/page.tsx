@@ -15,6 +15,9 @@ import {
   MapPin,
   Package,
   Truck,
+  CreditCard,
+  ChevronRight,
+  Smartphone,
 } from 'lucide-react'
 import {
   generateTrackingNumber,
@@ -24,6 +27,13 @@ import {
   Order,
 } from '@/lib/orders'
 import { toast } from 'sonner'
+
+type Step = 'form' | 'payment' | 'confirmed'
+
+const PROVINCES = [
+  'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal',
+  'Limpopo', 'Mpumalanga', 'Northern Cape', 'North West', 'Western Cape',
+]
 
 interface FormData {
   firstName: string
@@ -38,52 +48,32 @@ interface FormData {
   deliveryNote: string
 }
 
-const PROVINCES = [
-  'Eastern Cape',
-  'Free State',
-  'Gauteng',
-  'KwaZulu-Natal',
-  'Limpopo',
-  'Mpumalanga',
-  'Northern Cape',
-  'North West',
-  'Western Cape',
-]
-
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart()
-  const [step, setStep] = useState<'form' | 'confirm'>(items.length === 0 ? 'form' : 'form')
+  const [step, setStep] = useState<Step>('form')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [placedOrder, setPlacedOrder] = useState<Order | null>(null)
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    suburb: '',
-    city: '',
-    postalCode: '',
-    province: '',
-    deliveryNote: '',
+    firstName: '', lastName: '', email: '', phone: '',
+    address: '', suburb: '', city: '', postalCode: '', province: '', deliveryNote: '',
   })
 
-  const set = (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-    setFormData((prev) => ({ ...prev, [field]: e.target.value }))
+  const set = (field: keyof FormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }))
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  // Step 1 → Step 2: generate tracking, save order, go to payment screen
+  const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault()
     if (items.length === 0) return
     setIsSubmitting(true)
-
     setTimeout(() => {
       const trackingNumber = generateTrackingNumber()
-      const estimatedDelivery = getEstimatedDelivery()
       const order: Order = {
         trackingNumber,
         status: 'ordered',
         createdAt: new Date().toISOString(),
-        estimatedDelivery,
+        estimatedDelivery: getEstimatedDelivery(),
         customer: {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -93,114 +83,218 @@ export default function CheckoutPage() {
           city: formData.city,
           postalCode: formData.postalCode,
         },
-        items: items.map((i) => ({
-          id: i.id,
-          name: i.name,
-          price: i.price,
-          image: i.image,
-          quantity: i.quantity,
-        })),
+        items: items.map((i) => ({ id: i.id, name: i.name, price: i.price, image: i.image, quantity: i.quantity })),
         total,
       }
       saveOrder(order)
-      clearCart()
       setPlacedOrder(order)
-      setStep('confirm')
       setIsSubmitting(false)
+      setStep('payment')
       window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 1200)
+    }, 900)
   }
 
-  const copyTracking = () => {
-    if (!placedOrder) return
-    navigator.clipboard.writeText(placedOrder.trackingNumber)
-    toast.success('Tracking number copied!')
+  // Step 2 → Step 3: mark as paid, clear cart
+  const handleMarkAsPaid = () => {
+    clearCart()
+    setStep('confirmed')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  // ── ORDER CONFIRMATION ─────────────────────────────────────────────────────
-  if (step === 'confirm' && placedOrder) {
-    const whatsappMsg = `Hi Angela! I just placed an order on Zenestry.\n\nTracking: *${placedOrder.trackingNumber}*\nName: ${placedOrder.customer.firstName} ${placedOrder.customer.lastName}\nPhone: ${placedOrder.customer.phone}\nTotal: R${placedOrder.total.toFixed(2)}\n\nPlease let me know how to arrange payment. Thank you!`
+  const copyText = (text: string, label: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success(`${label} copied!`)
+  }
 
+  // ── STEP 2: PAYSHAP PAYMENT ────────────────────────────────────────────────
+  if (step === 'payment' && placedOrder) {
+    return (
+      <>
+        <Header />
+        <main className="min-h-screen bg-background py-12 px-4">
+          <div className="max-w-lg mx-auto space-y-6">
+
+            {/* Progress */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="text-foreground font-medium">Details</span>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-accent font-medium">Payment</span>
+              <ChevronRight className="w-4 h-4" />
+              <span>Confirmed</span>
+            </div>
+
+            <div>
+              <h1 className="font-serif text-3xl text-foreground">Complete Payment</h1>
+              <p className="text-muted-foreground mt-1 text-sm">
+                Your order is reserved — complete the PayShap payment below to confirm it.
+              </p>
+            </div>
+
+            {/* PayShap card */}
+            <div className="bg-card border-2 border-accent/30 rounded-2xl overflow-hidden">
+              {/* Header */}
+              <div className="bg-accent/10 px-6 py-4 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
+                  <Smartphone className="w-5 h-5 text-accent-foreground" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">Pay via PayShap</p>
+                  <p className="text-xs text-muted-foreground">Instant bank-to-bank payment</p>
+                </div>
+              </div>
+
+              {/* Payment details */}
+              <div className="p-6 space-y-4">
+                {[
+                  { label: 'PayShap Number', value: '082 827 7990', copy: '0828277990' },
+                  { label: 'Account Name', value: 'Angela / Zenestry', copy: 'Zenestry' },
+                  { label: 'Amount', value: `R ${placedOrder.total.toFixed(2)}`, copy: placedOrder.total.toFixed(2) },
+                  { label: 'Reference', value: placedOrder.trackingNumber, copy: placedOrder.trackingNumber },
+                ].map(({ label, value, copy }) => (
+                  <div key={label} className="flex items-center justify-between py-3 border-b border-border/40 last:border-0">
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">{label}</p>
+                      <p className={`font-medium text-foreground mt-0.5 ${label === 'Reference' ? 'font-mono text-accent' : ''}`}>{value}</p>
+                    </div>
+                    <button
+                      onClick={() => copyText(copy, label)}
+                      className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                      aria-label={`Copy ${label}`}
+                    >
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-secondary/30 rounded-xl border border-border/50 p-5 space-y-3">
+              <p className="text-sm font-medium text-foreground">How to pay with PayShap</p>
+              <ol className="space-y-2">
+                {[
+                  'Open your banking app',
+                  'Navigate to Pay → PayShap',
+                  'Enter the PayShap number: 082 827 7990',
+                  `Enter the amount: R ${placedOrder.total.toFixed(2)}`,
+                  `Use reference: ${placedOrder.trackingNumber}`,
+                  'Confirm the payment',
+                ].map((step, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-medium">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Order total recap */}
+            <div className="bg-card border border-border/50 rounded-xl p-5 flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Order total</p>
+                <p className="font-serif text-2xl font-semibold text-foreground">
+                  R {placedOrder.total.toFixed(2)}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">Tracking</p>
+                <p className="font-mono text-sm font-bold text-accent">{placedOrder.trackingNumber}</p>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleMarkAsPaid}
+              size="lg"
+              className="w-full h-14 bg-primary text-primary-foreground hover:bg-primary/90 text-base rounded-xl"
+            >
+              <CheckCircle2 className="mr-2 w-5 h-5" />
+              I've Completed Payment
+            </Button>
+
+            <p className="text-xs text-center text-muted-foreground">
+              Angela will verify your payment and update your order status.
+              You can track your order using the tracking number above.
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    )
+  }
+
+  // ── STEP 3: CONFIRMED ──────────────────────────────────────────────────────
+  if (step === 'confirmed' && placedOrder) {
     return (
       <>
         <Header />
         <main className="min-h-screen bg-background py-16 px-4">
           <div className="max-w-2xl mx-auto space-y-8">
 
-            {/* Check */}
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="w-20 h-20 rounded-full bg-accent/10 border-2 border-accent/30 flex items-center justify-center">
                 <CheckCircle2 className="w-10 h-10 text-accent" strokeWidth={1.5} />
               </div>
               <div>
-                <h1 className="font-serif text-3xl text-foreground">Order Placed!</h1>
+                <h1 className="font-serif text-3xl text-foreground">Thank You!</h1>
                 <p className="text-muted-foreground mt-1">
-                  Thank you, {placedOrder.customer.firstName}. Angela will be in touch shortly.
+                  Your payment is being verified, {placedOrder.customer.firstName}. Angela will confirm shortly.
                 </p>
               </div>
             </div>
 
-            {/* Tracking Number — hero */}
+            {/* Tracking number */}
             <div className="bg-accent/5 border-2 border-accent/30 rounded-2xl p-8 text-center space-y-4">
               <div className="flex items-center justify-center gap-2 text-xs font-medium tracking-widest text-accent uppercase">
-                <Package className="w-4 h-4" />
-                Your Tracking Number
+                <Package className="w-4 h-4" /> Your Tracking Number
               </div>
               <div className="font-mono text-4xl font-bold text-foreground tracking-widest">
                 {placedOrder.trackingNumber}
               </div>
-              <p className="text-sm text-muted-foreground">
-                Save this number — you'll need it to check your order status
-              </p>
+              <p className="text-sm text-muted-foreground">Save this to track your order status</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button
-                  onClick={copyTracking}
+                  onClick={() => copyText(placedOrder.trackingNumber, 'Tracking number')}
                   variant="outline"
                   className="gap-2 border-accent/30 hover:bg-accent/10"
                 >
-                  <Copy className="w-4 h-4" />
-                  Copy Number
+                  <Copy className="w-4 h-4" /> Copy Number
                 </Button>
                 <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2">
                   <Link href={`/track?number=${placedOrder.trackingNumber}`}>
-                    <Truck className="w-4 h-4" />
-                    Track My Order
+                    <Truck className="w-4 h-4" /> Track My Order
                   </Link>
                 </Button>
               </div>
             </div>
 
-            {/* Estimated delivery */}
-            <div className="bg-card border border-border/50 rounded-xl p-5 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                <Truck className="w-5 h-5 text-muted-foreground" />
+            {/* Delivery info */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="bg-card border border-border/50 rounded-xl p-5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                  <Truck className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Estimated Delivery</p>
+                  <p className="text-sm text-muted-foreground">{formatDate(placedOrder.estimatedDelivery)}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-foreground">Estimated Delivery</p>
-                <p className="text-sm text-muted-foreground">{formatDate(placedOrder.estimatedDelivery)}</p>
-              </div>
-            </div>
-
-            {/* Delivery address */}
-            <div className="bg-card border border-border/50 rounded-xl p-5 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0 mt-0.5">
-                <MapPin className="w-5 h-5 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground mb-1">Delivering to</p>
-                <p className="text-sm text-muted-foreground">
-                  {placedOrder.customer.firstName} {placedOrder.customer.lastName}
-                </p>
-                <p className="text-sm text-muted-foreground">{placedOrder.customer.address}</p>
-                <p className="text-sm text-muted-foreground">
-                  {placedOrder.customer.city}, {placedOrder.customer.postalCode}
-                </p>
+              <div className="bg-card border border-border/50 rounded-xl p-5 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Delivering to</p>
+                  <p className="text-sm text-muted-foreground">{placedOrder.customer.address}</p>
+                  <p className="text-sm text-muted-foreground">{placedOrder.customer.city}</p>
+                </div>
               </div>
             </div>
 
             {/* Order items */}
             <div className="bg-card border border-border/50 rounded-xl p-6 space-y-4">
-              <h3 className="font-serif text-lg font-medium text-foreground">What you ordered</h3>
+              <h3 className="font-serif text-lg font-medium text-foreground">Order Summary</h3>
               <div className="space-y-3">
                 {placedOrder.items.map((item) => (
                   <div key={item.id} className="flex items-center gap-4">
@@ -211,36 +305,14 @@ export default function CheckoutPage() {
                       <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
                       <p className="text-xs text-muted-foreground">Qty {item.quantity}</p>
                     </div>
-                    <p className="text-sm font-semibold text-foreground">
-                      R{(item.price * item.quantity).toFixed(2)}
-                    </p>
+                    <p className="text-sm font-semibold">R{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                 ))}
               </div>
-              <div className="flex justify-between items-center pt-4 border-t border-border/50">
-                <span className="font-serif font-medium text-foreground">Total</span>
-                <span className="font-serif text-xl font-semibold text-foreground">
-                  R{placedOrder.total.toFixed(2)}
-                </span>
+              <div className="flex justify-between pt-3 border-t border-border/50 font-serif font-semibold text-foreground">
+                <span>Total Paid</span>
+                <span>R{placedOrder.total.toFixed(2)}</span>
               </div>
-            </div>
-
-            {/* Payment note */}
-            <div className="rounded-xl border border-border/50 bg-secondary/30 p-5 space-y-2 text-sm text-muted-foreground">
-              <p className="font-medium text-foreground">Payment</p>
-              <p>
-                Angela will call or WhatsApp{' '}
-                <strong className="text-foreground">{placedOrder.customer.phone}</strong> to confirm
-                your order and arrange payment via EFT, SnapScan, or PayShap.
-              </p>
-              <a
-                href={`https://wa.me/27828277990?text=${encodeURIComponent(whatsappMsg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-2 text-[#25D366] font-medium hover:underline"
-              >
-                Or WhatsApp Angela directly →
-              </a>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
@@ -258,17 +330,23 @@ export default function CheckoutPage() {
     )
   }
 
-  // ── CHECKOUT FORM ──────────────────────────────────────────────────────────
+  // ── STEP 1: FORM ───────────────────────────────────────────────────────────
   return (
     <>
       <Header />
       <main className="min-h-screen bg-background">
         <div className="border-b border-border/50 py-10 bg-secondary/20">
-          <div className="container mx-auto px-4 lg:px-8">
+          <div className="container mx-auto px-4 lg:px-8 space-y-2">
+            {/* Progress steps */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+              <span className="text-accent font-medium">Details</span>
+              <ChevronRight className="w-4 h-4" />
+              <span>Payment</span>
+              <ChevronRight className="w-4 h-4" />
+              <span>Confirmed</span>
+            </div>
             <h1 className="font-serif text-4xl text-foreground">Checkout</h1>
-            <p className="text-muted-foreground mt-1 text-sm">
-              Fill in your details and we'll handle the rest
-            </p>
+            <p className="text-muted-foreground text-sm">Fill in your details — no account needed</p>
           </div>
         </div>
 
@@ -289,11 +367,11 @@ export default function CheckoutPage() {
           <div className="container mx-auto px-4 lg:px-8 py-12">
             <div className="grid lg:grid-cols-3 gap-10 items-start">
 
-              {/* ── Form ── */}
+              {/* Form */}
               <div className="lg:col-span-2">
-                <form onSubmit={handlePlaceOrder} className="space-y-8">
+                <form onSubmit={handleProceedToPayment} className="space-y-8">
 
-                  {/* Personal Details */}
+                  {/* Personal details */}
                   <div className="bg-card rounded-2xl border border-border/50 p-6 md:p-8 space-y-6">
                     <h2 className="font-serif text-2xl font-medium text-foreground">Your Details</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -316,7 +394,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Delivery Address */}
+                  {/* Address */}
                   <div className="bg-card rounded-2xl border border-border/50 p-6 md:p-8 space-y-6">
                     <h2 className="font-serif text-2xl font-medium text-foreground">Delivery Address</h2>
                     <div className="space-y-5">
@@ -346,14 +424,14 @@ export default function CheckoutPage() {
                             className="w-full h-10 px-3 py-2 rounded-md border border-border/50 bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                           >
                             <option value="">Select province</option>
-                            {PROVINCES.map((p) => (
-                              <option key={p} value={p}>{p}</option>
-                            ))}
+                            {PROVINCES.map((p) => <option key={p} value={p}>{p}</option>)}
                           </select>
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-foreground">Delivery Note <span className="text-muted-foreground font-normal">(optional)</span></label>
+                        <label className="text-sm font-medium text-foreground">
+                          Delivery Note <span className="text-muted-foreground font-normal">(optional)</span>
+                        </label>
                         <textarea
                           value={formData.deliveryNote}
                           onChange={set('deliveryNote')}
@@ -365,13 +443,16 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Payment info */}
-                  <div className="rounded-2xl border border-accent/25 bg-accent/5 p-6 space-y-2">
-                    <h3 className="font-serif text-lg font-medium text-foreground">Payment</h3>
-                    <p className="text-sm text-foreground/80 leading-relaxed">
-                      After placing your order Angela will personally contact you on{' '}
-                      <strong>{formData.phone || 'your number'}</strong> to arrange payment via EFT, SnapScan, or PayShap.
-                    </p>
+                  {/* Payment method teaser */}
+                  <div className="rounded-2xl border border-border/50 bg-card p-5 flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Payment via PayShap</p>
+                      <p className="text-xs text-muted-foreground">You'll get the payment details on the next step</p>
+                    </div>
+                    <span className="ml-auto text-xs bg-accent/10 text-accent px-2 py-1 rounded-full font-medium">Instant</span>
                   </div>
 
                   <Button
@@ -382,16 +463,19 @@ export default function CheckoutPage() {
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
                         <span className="w-4 h-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
-                        Placing your order…
+                        Preparing your order…
                       </span>
                     ) : (
-                      'Place Order & Get Tracking Number'
+                      <>
+                        Continue to Payment
+                        <ChevronRight className="ml-2 w-5 h-5" />
+                      </>
                     )}
                   </Button>
                 </form>
               </div>
 
-              {/* ── Order Summary ── */}
+              {/* Order summary */}
               <div className="lg:col-span-1">
                 <div className="bg-card rounded-2xl border border-border/50 p-6 sticky top-24 space-y-6">
                   <h2 className="font-serif text-2xl font-medium text-foreground">Order Summary</h2>
@@ -411,16 +495,13 @@ export default function CheckoutPage() {
                   </div>
                   <div className="border-t border-border/50 pt-5 space-y-3">
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Subtotal ({items.length} {items.length === 1 ? 'item' : 'items'})</span>
-                      <span>R{total.toFixed(2)}</span>
+                      <span>Subtotal</span><span>R{total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Delivery</span>
-                      <span className="text-accent font-medium">Free</span>
+                      <span>Delivery</span><span className="text-accent font-medium">Free</span>
                     </div>
-                    <div className="flex justify-between items-center font-serif text-xl font-semibold text-foreground pt-3 border-t border-border/50">
-                      <span>Total</span>
-                      <span>R{total.toFixed(2)}</span>
+                    <div className="flex justify-between font-serif text-xl font-semibold text-foreground pt-3 border-t border-border/50">
+                      <span>Total</span><span>R{total.toFixed(2)}</span>
                     </div>
                   </div>
                   <Button asChild variant="outline" className="w-full">
