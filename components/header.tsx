@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, ShoppingBag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -44,40 +45,15 @@ export function Header() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative">
-                <svg
-                  viewBox="0 0 40 40"
-                  className="w-10 h-10 transition-transform duration-300 group-hover:scale-110"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20 5C20 5 15 10 15 15C15 18 17 20 20 20C23 20 25 18 25 15C25 10 20 5 20 5Z"
-                    className="fill-primary"
-                  />
-                  <path
-                    d="M12 12C12 12 8 16 8 20C8 22.5 10 24 12.5 24C15 24 17 22.5 17 20C17 16 13 12 12 12Z"
-                    className="fill-accent"
-                  />
-                  <path
-                    d="M28 12C28 12 32 16 32 20C32 22.5 30 24 27.5 24C25 24 23 22.5 23 20C23 16 27 12 28 12Z"
-                    className="fill-accent"
-                  />
-                  <path
-                    d="M20 22C20 22 16 26 16 30C16 33 18 35 20 35C22 35 24 33 24 30C24 26 20 22 20 22Z"
-                    className="fill-primary/70"
-                  />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-serif text-xl font-semibold tracking-wide text-foreground">
-                  ZENistry
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Beauty & Lifestyle
-                </span>
-              </div>
+            <Link href="/" className="flex items-center group">
+              <Image
+                src="/logo.png"
+                alt="ZENistry"
+                width={120}
+                height={60}
+                className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -135,28 +111,13 @@ export function Header() {
                 <SheetContent side="right" className="w-80 bg-background p-0">
                   <div className="flex flex-col h-full">
                     <div className="p-6 border-b border-border">
-                      <div className="flex items-center gap-2">
-                        <svg
-                          viewBox="0 0 40 40"
-                          className="w-8 h-8"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M20 5C20 5 15 10 15 15C15 18 17 20 20 20C23 20 25 18 25 15C25 10 20 5 20 5Z"
-                            className="fill-primary"
-                          />
-                          <path
-                            d="M12 12C12 12 8 16 8 20C8 22.5 10 24 12.5 24C15 24 17 22.5 17 20C17 16 13 12 12 12Z"
-                            className="fill-accent"
-                          />
-                          <path
-                            d="M28 12C28 12 32 16 32 20C32 22.5 30 24 27.5 24C25 24 23 22.5 23 20C23 16 27 12 28 12Z"
-                            className="fill-accent"
-                          />
-                        </svg>
-                        <span className="font-serif text-lg font-semibold">ZENistry</span>
-                      </div>
+                      <Image
+                        src="/logo.png"
+                        alt="ZENistry"
+                        width={100}
+                        height={50}
+                        className="h-10 w-auto"
+                      />
                     </div>
                     <nav className="flex flex-col p-6 gap-1">
                       {navLinks.map((link) => (

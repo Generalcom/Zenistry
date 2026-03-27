@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -45,32 +46,14 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 sm:col-span-2 lg:col-span-2">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 mb-4 md:mb-6">
-              <svg
-                viewBox="0 0 40 40"
-                className="w-8 md:w-10 h-8 md:h-10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M20 5C20 5 15 10 15 15C15 18 17 20 20 20C23 20 25 18 25 15C25 10 20 5 20 5Z"
-                  className="fill-primary-foreground"
-                />
-                <path
-                  d="M12 12C12 12 8 16 8 20C8 22.5 10 24 12.5 24C15 24 17 22.5 17 20C17 16 13 12 12 12Z"
-                  className="fill-primary-foreground/60"
-                />
-                <path
-                  d="M28 12C28 12 32 16 32 20C32 22.5 30 24 27.5 24C25 24 23 22.5 23 20C23 16 27 12 28 12Z"
-                  className="fill-primary-foreground/60"
-                />
-              </svg>
-              <div className="min-w-0">
-                <span className="font-serif text-lg md:text-xl font-semibold block">ZENistry</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] opacity-70 block">
-                  Beauty & Lifestyle
-                </span>
-              </div>
+            <Link href="/" className="inline-block mb-4 md:mb-6">
+              <Image
+                src="/logo.png"
+                alt="ZENistry"
+                width={110}
+                height={55}
+                className="h-14 w-auto invert mix-blend-screen"
+              />
             </Link>
 
             <p className="text-xs md:text-sm text-primary-foreground/70 leading-relaxed mb-4 md:mb-6 max-w-sm">
