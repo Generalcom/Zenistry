@@ -82,8 +82,8 @@ function ShopContent() {
         {/* Content */}
         <div className="container mx-auto px-4 lg:px-8 py-12">
           <div className="grid lg:grid-cols-4 gap-8">
-            {/* Sidebar Filters */}
-            <div className="lg:col-span-1">
+            {/* Sidebar Filters - Desktop only */}
+            <div className="hidden lg:block lg:col-span-1">
               <div className="sticky top-24 space-y-6">
                 <div className="flex items-center gap-2 mb-2">
                   <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
@@ -109,11 +109,30 @@ function ShopContent() {
 
             {/* Products Grid */}
             <div className="lg:col-span-3">
+              {/* Mobile filter pills */}
+              <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 mb-6">
+                <div className="flex gap-2 pb-1">
+                  {categoryFilters.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap border ${
+                        selectedCategory === cat
+                          ? 'bg-accent text-accent-foreground border-accent'
+                          : 'bg-card text-foreground border-border hover:bg-secondary'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <p className="text-sm text-muted-foreground mb-6">
                 {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
                 {selectedCategory !== 'All' ? ` in ${selectedCategory}` : ''}
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {filteredProducts.map((product) => (
                   <div
                     key={product.id}

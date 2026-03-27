@@ -76,18 +76,18 @@ export function FeaturedProducts() {
               nourish your body, calm your mind, and elevate your daily rituals.
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button 
-              variant="outline" 
-              size="icon" 
+          <div className="hidden sm:flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="icon"
               onClick={() => scroll("left")}
               className="rounded-full border-border hover:bg-accent/10"
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
-            <Button 
-              variant="outline" 
-              size="icon" 
+            <Button
+              variant="outline"
+              size="icon"
               onClick={() => scroll("right")}
               className="rounded-full border-border hover:bg-accent/10"
             >
@@ -106,7 +106,7 @@ export function FeaturedProducts() {
             <div
               key={product.id}
               data-product-id={product.id}
-              className={`flex-shrink-0 w-80 lg:w-auto snap-start group transition-all duration-700 ${
+              className={`flex-shrink-0 w-[268px] sm:w-80 lg:w-auto snap-start group transition-all duration-700 ${
                 visibleProducts.includes(product.id)
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"

@@ -67,7 +67,7 @@ export function Hero() {
             </div>
 
             {/* Trust Badges */}
-            <div className="flex items-center gap-8 pt-4">
+            <div className="flex items-center gap-4 sm:gap-8 pt-4">
               <div className="text-center">
                 <p className="font-serif text-3xl font-semibold text-foreground">100%</p>
                 <p className="text-sm text-muted-foreground">Natural</p>
@@ -86,7 +86,7 @@ export function Hero() {
           </div>
 
           {/* Right Content - Image Grid */}
-          <div className={`relative ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
+          <div className={`relative pb-12 sm:pb-8 lg:pb-0 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
             <div className="relative aspect-square max-w-lg mx-auto">
               {/* Main Image */}
               <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl animate-float">
@@ -98,10 +98,10 @@ export function Hero() {
                   priority
                 />
               </div>
-              
+
               {/* Floating Product Card */}
-              <div className="absolute -bottom-6 -left-6 bg-card p-4 rounded-2xl shadow-xl border border-border w-48 animate-float animation-delay-400">
-                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-3">
+              <div className="absolute -bottom-4 -left-3 sm:-bottom-6 sm:-left-6 bg-card p-3 sm:p-4 rounded-2xl shadow-xl border border-border w-36 sm:w-48 animate-float animation-delay-400">
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2 sm:mb-3">
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0021-Y257qdrVojSAHkr0VCrhGIt0ZvrPoP.jpg"
                     alt="Hydrating Face Oil"
@@ -109,13 +109,13 @@ export function Hero() {
                     className="object-cover"
                   />
                 </div>
-                <p className="font-medium text-sm">Hydrating Face Oil</p>
-                <p className="text-accent font-semibold">R 350</p>
+                <p className="font-medium text-xs sm:text-sm">Hydrating Face Oil</p>
+                <p className="text-accent font-semibold text-xs sm:text-base">R 350</p>
               </div>
 
               {/* Floating Badge */}
-              <div className="absolute -top-4 -right-4 bg-accent text-accent-foreground px-6 py-3 rounded-full shadow-lg animate-float animation-delay-600">
-                <p className="font-medium text-sm">Bestseller</p>
+              <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-accent text-accent-foreground px-4 py-2 sm:px-6 sm:py-3 rounded-full shadow-lg animate-float animation-delay-600">
+                <p className="font-medium text-xs sm:text-sm">Bestseller</p>
               </div>
             </div>
           </div>
