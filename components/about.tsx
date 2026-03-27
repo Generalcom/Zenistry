@@ -95,7 +95,7 @@ export function About() {
                   <Heart className="w-6 md:w-8 h-6 md:h-8 text-accent" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-serif text-2xl md:text-3xl font-semibold text-foreground">5+ Years</p>
+                  <p className="font-serif text-2xl md:text-3xl font-semibold text-foreground">1+ Years</p>
                   <p className="text-xs md:text-sm text-muted-foreground">of Crafting Wellness</p>
                 </div>
               </div>

@@ -36,7 +36,7 @@ export function Reviews() {
   const averageRating =
     reviews.length > 0
       ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-      : '5.0'
+      : null
 
   return (
     <section id="reviews" className="py-20 bg-background">
@@ -57,18 +57,24 @@ export function Reviews() {
         {/* Rating Summary */}
         <div className="bg-accent/5 rounded-2xl p-8 mb-12 border border-accent/10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-center md:text-left">
-              <div className="flex items-center gap-1 mb-2 justify-center md:justify-start">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                ))}
-              </div>
-              <p className="text-sm text-muted-foreground">Based on {reviews.length} reviews</p>
-            </div>
-            <div className="text-center">
-              <div className="font-serif text-5xl font-bold text-foreground">{averageRating}</div>
-              <p className="text-sm text-muted-foreground">Average Rating</p>
-            </div>
+            {averageRating ? (
+              <>
+                <div className="text-center md:text-left">
+                  <div className="flex items-center gap-1 mb-2 justify-center md:justify-start">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-muted-foreground">Based on {reviews.length} reviews</p>
+                </div>
+                <div className="text-center">
+                  <div className="font-serif text-5xl font-bold text-foreground">{averageRating}</div>
+                  <p className="text-sm text-muted-foreground">Average Rating</p>
+                </div>
+              </>
+            ) : (
+              <p className="text-muted-foreground text-sm">No reviews yet — be the first!</p>
+            )}
             <Button
               onClick={() => setIsFormOpen(!isFormOpen)}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3"

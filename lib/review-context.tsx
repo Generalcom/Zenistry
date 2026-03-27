@@ -17,42 +17,22 @@ interface ReviewContextType {
 
 const ReviewContext = createContext<ReviewContextType | undefined>(undefined)
 
-const defaultReviews: Review[] = [
-  {
-    id: '1',
-    name: 'Sarah M.',
-    rating: 5,
-    comment: 'The Ashwagandha honey has completely transformed my morning routine. I feel more energized and less stressed throughout the day. Absolutely love it!',
-    date: '2024-03-15'
-  },
-  {
-    id: '2',
-    name: 'Jessica K.',
-    rating: 5,
-    comment: 'I\'ve tried so many face oils, but the Hydrating Face Oil from Zenestry is on another level. My skin has never looked better!',
-    date: '2024-03-12'
-  },
-  {
-    id: '3',
-    name: 'Amanda T.',
-    rating: 5,
-    comment: 'The podcast episodes are so calming and informative. Combined with the White Tea body products, my self-care routine is now complete.',
-    date: '2024-03-10'
-  }
-]
+const MOCK_IDS = ['1', '2', '3']
 
 export function ReviewProvider({ children }: { children: React.ReactNode }) {
-  const [reviews, setReviews] = useState<Review[]>(defaultReviews)
+  const [reviews, setReviews] = useState<Review[]>([])
   const [isHydrated, setIsHydrated] = useState(false)
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount, stripping any legacy mock reviews
   useEffect(() => {
     const savedReviews = localStorage.getItem('zenestry-reviews')
     if (savedReviews) {
       try {
-        setReviews(JSON.parse(savedReviews))
+        const parsed: Review[] = JSON.parse(savedReviews)
+        const real = parsed.filter((r) => !MOCK_IDS.includes(r.id))
+        setReviews(real)
       } catch {
-        setReviews(defaultReviews)
+        setReviews([])
       }
     }
     setIsHydrated(true)

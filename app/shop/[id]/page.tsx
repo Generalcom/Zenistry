@@ -50,7 +50,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-background pt-20">
         {/* Breadcrumb */}
         <div className="border-b border-border/50 bg-card/50">
           <div className="container mx-auto px-4 lg:px-8 py-4">

@@ -24,44 +24,16 @@ export function ReviewProvider({ children }: { children: ReactNode }) {
   const [reviews, setReviews] = useState<Review[]>([])
   const [mounted, setMounted] = useState(false)
 
-  const initialReviews: Review[] = [
-    {
-      id: '1',
-      name: 'Sarah M.',
-      email: 'sarah@example.com',
-      rating: 5,
-      comment: 'The Ashwagandha honey is absolutely incredible. I\'ve noticed a significant improvement in my anxiety levels. Truly a game-changer!',
-      date: '2024-03-15',
-      verified: true,
-    },
-    {
-      id: '2',
-      name: 'James K.',
-      email: 'james@example.com',
-      rating: 5,
-      comment: 'Premium quality products. The podcast episodes have helped me so much with my mental wellness journey.',
-      date: '2024-03-10',
-      verified: true,
-    },
-    {
-      id: '3',
-      name: 'Emma R.',
-      email: 'emma@example.com',
-      rating: 5,
-      comment: 'My skin has never looked better. The hydrating face oil is a staple in my skincare routine now.',
-      date: '2024-03-05',
-      verified: true,
-    },
-  ]
-
   // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('zenestry-reviews')
     if (saved) {
-      setReviews(JSON.parse(saved))
-    } else {
-      setReviews(initialReviews)
-      localStorage.setItem('zenestry-reviews', JSON.stringify(initialReviews))
+      try {
+        const parsed: Review[] = JSON.parse(saved)
+        setReviews(parsed.filter((r) => !['1', '2', '3'].includes(r.id)))
+      } catch {
+        setReviews([])
+      }
     }
     setMounted(true)
   }, [])

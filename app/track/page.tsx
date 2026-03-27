@@ -78,7 +78,7 @@ function TrackingContent() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-background pt-20">
         {/* Hero */}
         <div className="border-b border-border/50 bg-secondary/20 py-12">
           <div className="container mx-auto px-4 lg:px-8 space-y-3 text-center max-w-2xl mx-auto">

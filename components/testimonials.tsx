@@ -84,12 +84,14 @@ export function Testimonials() {
             </p>
             <p className="text-sm text-muted-foreground">Reviews</p>
           </div>
-          <div className="space-y-2">
-            <p className="font-serif text-3xl lg:text-4xl font-semibold text-primary">
-              4.9★
-            </p>
-            <p className="text-sm text-muted-foreground">Average Rating</p>
-          </div>
+          {reviews.length > 0 && (
+            <div className="space-y-2">
+              <p className="font-serif text-3xl lg:text-4xl font-semibold text-primary">
+                {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}★
+              </p>
+              <p className="text-sm text-muted-foreground">Average Rating</p>
+            </div>
+          )}
           <div className="space-y-2">
             <p className="font-serif text-3xl lg:text-4xl font-semibold text-primary">
               10K+
