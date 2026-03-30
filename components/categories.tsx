@@ -10,7 +10,7 @@ const categories = [
     id: 1,
     name: "Wellness Honeys",
     description: "Adaptogenic herbs and superfoods infused in pure raw honey",
-    count: "3 Products",
+    count: "4 Products",
     href: "/shop?category=Wellness+Honey",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0012-u2yv70r1CDsR6zX5K8XmXASXjXCwnz.jpg",
     color: "from-amber-900/80 to-amber-700/60"
@@ -27,14 +27,32 @@ const categories = [
   {
     id: 3,
     name: "Body Care",
-    description: "Luxurious body washes and creams for silky smooth skin",
-    count: "2 Products",
+    description: "Bodywash, body butter, and natural deodorant for everyday luxury",
+    count: "3 Products",
     href: "/shop?category=Body+Care",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0017-83x9Dd1xS42jSb3KmABulyrk2HQrV9.jpg",
     color: "from-emerald-900/80 to-emerald-700/60"
   },
   {
     id: 4,
+    name: "Pain Relief",
+    description: "Natural oils, creams and sprays to ease muscles and joints",
+    count: "4 Products",
+    href: "/shop?category=Pain+Relief",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0021-Y257qdrVojSAHkr0VCrhGIt0ZvrPoP.jpg",
+    color: "from-red-900/80 to-red-700/60"
+  },
+  {
+    id: 5,
+    name: "Men's Grooming",
+    description: "Nourishing beard care crafted for the intentional man",
+    count: "1 Product",
+    href: "/shop?category=Men%27s+Grooming",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0022-H7TeEV7MkcozQwvxc3HUECypz6NO0k.jpg",
+    color: "from-slate-900/80 to-slate-700/60"
+  },
+  {
+    id: 6,
     name: "Aromatherapy",
     description: "Essential oil blends for mental wellness and calm",
     count: "1 Product",
@@ -85,7 +103,7 @@ export function Categories() {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {categories.map((category, index) => (
             <Link
               href={category.href}

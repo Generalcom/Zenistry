@@ -6,7 +6,11 @@
       "Bash(grep \"\\\\.tsx$\")",
       "Bash(grep \"\\\\.ts$\")",
       "Bash(sed 's/=.*//')",
-      "WebFetch(domain:pay.ikhokha.com)"
+      "WebFetch(domain:pay.ikhokha.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(python:*)"
     ]
   }
 }

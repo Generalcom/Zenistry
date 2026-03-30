@@ -13,7 +13,7 @@ import { useProducts } from '@/hooks/use-products'
 import { toast } from 'sonner'
 import { Star, ChevronLeft, Heart, SlidersHorizontal } from 'lucide-react'
 
-const categoryFilters = ['All', 'Wellness Honey', 'Skincare', 'Body Care', 'Aromatherapy']
+const categoryFilters = ['All', 'Wellness Honey', 'Skincare', 'Body Care', 'Pain Relief', "Men's Grooming", 'Aromatherapy']
 
 function ShopContent() {
   const { addToCart } = useCart()
