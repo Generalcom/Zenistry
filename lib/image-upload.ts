@@ -23,6 +23,7 @@ export function uploadImage(file: File): Promise<UploadedImage> {
         const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         
         const uploadedImage: UploadedImage = {
+          // H
           id: imageId,
           url: base64,
           name: file.name,
