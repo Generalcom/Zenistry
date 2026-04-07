@@ -3,8 +3,6 @@ export interface Product {
   slug: string
   name: string
   category: string
-  price: number
-  originalPrice?: number
   rating: number
   reviews: number
   image: string
@@ -21,15 +19,14 @@ export const products: Product[] = [
     slug: 'ashwagandha-black-seed-honey',
     name: 'Ashwagandha & Black Seed Oil Infused Honey',
     category: 'Wellness Honey',
-    price: 280,
-    originalPrice: 350,
     rating: 4.9,
     reviews: 127,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0018-4CMssr6L5guBainW035jzrdsi1wsZf.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0018-4CMssr6L5guBainW035jzrdsi1wsZf.jpg',
     badge: 'Bestseller',
     description: 'Adaptogenic honey blend for stress relief and immunity',
     longDescription:
-      'Our Ashwagandha & Black Seed Oil Infused Honey is a powerhouse wellness blend combining two of nature\'s most revered healing ingredients. Ashwagandha is an ancient adaptogen known for easing stress, promoting rest, and balancing mood — best enjoyed in the evening for relaxation and deep sleep. Paired with black seed oil, used for centuries for its potent anti-inflammatory and immune-boosting properties. Each jar is handcrafted with pure raw honey.',
+      "Our Ashwagandha & Black Seed Oil Infused Honey is a powerhouse wellness blend combining two of nature's most revered healing ingredients. Ashwagandha is an ancient adaptogen known for easing stress, promoting rest, and balancing mood — best enjoyed in the evening for relaxation and deep sleep. Paired with black seed oil, used for centuries for its potent anti-inflammatory and immune-boosting properties. Each jar is handcrafted with pure raw honey.",
     benefits: [
       'Eases stress and promotes restful sleep',
       'Supports and strengthens the immune system',
@@ -44,10 +41,10 @@ export const products: Product[] = [
     slug: 'black-seed-oil-honey',
     name: 'Black Seed Oil Infused Honey',
     category: 'Wellness Honey',
-    price: 250,
     rating: 4.8,
     reviews: 89,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0014-Ck81Pa4PLuMGrGjcuLDUSHMdRPfA3F.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0014-Ck81Pa4PLuMGrGjcuLDUSHMdRPfA3F.jpg',
     description: 'Pure honey infused with black seed oil for daily wellness support.',
     longDescription:
       'Pure raw honey carefully infused with cold-pressed black seed oil (Nigella sativa). Black seed oil has been treasured for thousands of years across many cultures for its remarkable healing properties — from supporting respiratory health to boosting immunity. Paired with the natural goodness of raw honey, this blend is both delicious and deeply nourishing for your body.',
@@ -65,10 +62,10 @@ export const products: Product[] = [
     slug: 'shilajit-honey',
     name: 'Shilajit Infused Honey',
     category: 'Wellness Honey',
-    price: 320,
     rating: 4.9,
     reviews: 67,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0015-umyaVKdF9wtazQGpic6PevVDsNbBJT.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0015-umyaVKdF9wtazQGpic6PevVDsNbBJT.jpg',
     badge: 'Premium',
     description: 'A mineral-rich vitality booster for natural energy and stamina.',
     longDescription:
@@ -87,12 +84,13 @@ export const products: Product[] = [
     slug: 'hydrating-face-oil',
     name: 'Hydrating Face Oil',
     category: 'Skincare',
-    price: 350,
     rating: 5.0,
     reviews: 156,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0021-Y257qdrVojSAHkr0VCrhGIt0ZvrPoP.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0021-Y257qdrVojSAHkr0VCrhGIt0ZvrPoP.jpg',
     badge: 'New',
-    description: 'A lightweight nourishing oil to deeply hydrate and support radiant, mature skin.',
+    description:
+      'A lightweight nourishing oil to deeply hydrate and support radiant, mature skin.',
     longDescription:
       'A lightweight yet nourishing oil blend to deeply hydrate, soften, and support radiant, mature skin — especially during winter. Crafted from a carefully selected blend of cold-pressed botanical oils rich in essential fatty acids, including Castor Oil, Jojoba, and Frankincense. Despite its richness, the formula absorbs quickly and beautifully, making it suitable for all skin types.',
     benefits: [
@@ -109,11 +107,12 @@ export const products: Product[] = [
     slug: 'radiance-glow-serum',
     name: 'Radiance Glow Serum',
     category: 'Skincare',
-    price: 420,
     rating: 4.9,
     reviews: 98,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0007-yUMsZ36ZVH1JvAzljQegV0ybRFpBHI.jpg',
-    description: 'A bi-phase serum that hydrates, tones and illuminates for a nourishing glow.',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0007-yUMsZ36ZVH1JvAzljQegV0ybRFpBHI.jpg',
+    description:
+      'A bi-phase serum that hydrates, tones and illuminates for a nourishing glow.',
     longDescription:
       'This bi-phase serum blends natural oils and floral waters to hydrate, tone, and illuminate. Perfect for skin in need of a nourishing boost and radiant glow. The water phase delivers brightening actives including Aloe and Rose Water, while the oil phase with Squalane seals in lasting moisture. Separation may occur — shake gently before use to activate both phases.',
     benefits: [
@@ -130,12 +129,13 @@ export const products: Product[] = [
     slug: 'white-tea-bodywash',
     name: 'White Tea Bodywash',
     category: 'Body Care',
-    price: 180,
     rating: 4.7,
     reviews: 203,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0022-H7TeEV7MkcozQwvxc3HUECypz6NO0k.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0022-H7TeEV7MkcozQwvxc3HUECypz6NO0k.jpg',
     badge: 'Popular',
-    description: 'A gentle, pH-balanced bodywash with uplifting citrus and soft florals.',
+    description:
+      'A gentle, pH-balanced bodywash with uplifting citrus and soft florals.',
     longDescription:
       'A gentle, pH-balanced Bodywash infused with our signature White Tea blend — uplifting citrus, soft florals, and grounding botanicals. Leaves skin refreshed, lightly fragranced, and pampered like a spa ritual. Every shower becomes a calming, sensory experience. Gentle enough for sensitive skin, yet effective for daily use. Available in 500ml.',
     benefits: [
@@ -152,11 +152,11 @@ export const products: Product[] = [
     slug: 'nourishing-body-butter',
     name: 'Nourishing Body Butter',
     category: 'Body Care',
-    price: 220,
     rating: 4.8,
     reviews: 167,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0019-tLJDJgDcqWFVdZPDZ8Qp8WiNfXQ9a5.jpg',
-    description: 'Rich, whipped hydration — winter skin\'s best friend.',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0019-tLJDJgDcqWFVdZPDZ8Qp8WiNfXQ9a5.jpg',
+    description: "Rich, whipped hydration — winter skin's best friend.",
     longDescription:
       'Rich, whipped hydration crafted with Shea, Aloe, and botanical oils to deeply nourish and restore dry, sensitive skin. Melts into the skin for lasting moisture and a smooth, velvety finish. The perfect companion to the White Tea Bodywash — together they create the ultimate body care ritual. Available in Cashmere, Satin, and Silk scent variants.',
     benefits: [
@@ -173,10 +173,10 @@ export const products: Product[] = [
     slug: 'essence-dreams-diffuser',
     name: 'Essence & Dreams Diffuser Blend',
     category: 'Aromatherapy',
-    price: 190,
     rating: 4.8,
     reviews: 112,
-    image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0003-AiSVHyLDXwJeBGbzTFkZ7nTHAhydsW.jpg',
+    image:
+      'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0003-AiSVHyLDXwJeBGbzTFkZ7nTHAhydsW.jpg',
     description: 'Calming aromatherapy blend with essential oils for mental wellness.',
     longDescription:
       'A carefully curated blend of pure essential oils designed to create a sanctuary of calm wherever you are. Inspired by the ZENistry philosophy of mindful, intentional living, this diffuser blend combines grounding, uplifting, and calming aromatic notes to support mental wellness, deep focus, and restful sleep. A beautiful way to close your day or prepare for a moment of stillness.',
@@ -194,12 +194,12 @@ export const products: Product[] = [
     slug: 'deep-tissue-pain-relief-blend',
     name: 'Deep Tissue Pain Relief Blend',
     category: 'Pain Relief',
-    price: 150,
     rating: 4.8,
     reviews: 0,
     image: '/placeholder.jpg',
     badge: 'New',
-    description: 'Targeted natural pain relief — powerful, non-toxic, fast-absorbing.',
+    description:
+      'Targeted natural pain relief — powerful, non-toxic, fast-absorbing.',
     longDescription:
       'A powerful blend of high quality natural oils for targeted pain relief. Natural, non-toxic, and fast-absorbing. Key ingredients including Arnica Oil, Black Seed Oil, Ginger Oil, Mustard Oil, and Clove Oil work together to ease deep muscle and joint discomfort naturally. Available in 50ml.',
     benefits: [
@@ -216,34 +216,38 @@ export const products: Product[] = [
     slug: 'isintu-herbal-spray',
     name: 'Isintu Herbal Spray',
     category: 'Pain Relief',
-    price: 130,
     rating: 4.7,
     reviews: 0,
+<<<<<<< HEAD
     image: '/IMG-20260331-WA0007.jpg',
     description: 'A natural African herbal spray for vitality and overall well-being.',
+=======
+    image: '/placeholder.jpg',
+    description:
+      'A natural African herbal spray for vitality and overall well-being.',
+>>>>>>> b5715c2c817f3471087963f4dedcba118ecd89fd
     longDescription:
-      'A natural blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature\'s Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine and revered for their restorative properties. Available in 100ml.',
+      "A natural blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature's Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine and revered for their restorative properties. Available in 100ml.",
     benefits: [
       'Supports vitality and overall wellness',
       'Rooted in African traditional herbal medicine',
       'Helichrysum for soothing and recovery',
       'Sutherlandia for resilience and strength',
     ],
-    howToUse:
-      'Apply onto affected areas as required.',
+    howToUse: 'Apply onto affected areas as required.',
   },
   {
     id: '11',
     slug: 'isintu-herbal-cream',
     name: 'Isintu Herbal Cream',
     category: 'Pain Relief',
-    price: 140,
     rating: 4.7,
     reviews: 0,
     image: '/placeholder.jpg',
-    description: 'African herbal cream for vitality and natural well-being support.',
+    description:
+      'African herbal cream for vitality and natural well-being support.',
     longDescription:
-      'A natural cream blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature\'s Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine. A rich, easy-to-apply cream form of our beloved Isintu herbal formula. Available in 125g.',
+      "A natural cream blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature's Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine. A rich, easy-to-apply cream form of our beloved Isintu herbal formula. Available in 125g.",
     benefits: [
       'Supports vitality and overall wellness',
       'Rich cream for easy and effective application',
@@ -258,12 +262,12 @@ export const products: Product[] = [
     slug: 'magnesium-recovery-spray',
     name: 'Magnesium Recovery Spray',
     category: 'Pain Relief',
-    price: 160,
     rating: 4.9,
     reviews: 0,
     image: '/placeholder.jpg',
     badge: 'New',
-    description: 'Relieve, Restore, Recharge — eases muscles, cramps, and promotes restful sleep.',
+    description:
+      'Relieve, Restore, Recharge — eases muscles, cramps, and promotes restful sleep.',
     longDescription:
       'A magnesium-enriched spray infused with essential oils to ease stiff muscles, cramps, and promote relaxation and support restful sleep. Relieve, Restore, Recharge. Magnesium is an essential mineral that many people are deficient in — transdermal application through the skin is one of the most effective ways to replenish levels. Available in 100ml.',
     benefits: [
@@ -280,7 +284,6 @@ export const products: Product[] = [
     slug: 'natural-anti-perspirant',
     name: 'Natural Anti-Perspirant',
     category: 'Body Care',
-    price: 120,
     rating: 4.6,
     reviews: 0,
     image: '/placeholder.jpg',
@@ -301,12 +304,12 @@ export const products: Product[] = [
     slug: 'zenistry-beard-cream',
     name: 'ZENistry Beard Cream',
     category: "Men's Grooming",
-    price: 180,
     rating: 4.8,
     reviews: 0,
     image: '/IMG-20260331-WA0008.jpg',
     badge: 'New',
-    description: 'Nourish. Style. Refine — a lightweight conditioning cream for every beard.',
+    description:
+      'Nourish. Style. Refine — a lightweight conditioning cream for every beard.',
     longDescription:
       'A lightweight, conditioning cream crafted with Shea Butter, Jojoba, Lanolin, and Squalane to soften and strengthen your beard without greasiness. Infused with our signature essential oil blend including Cedarwood and Bergamot for a warm, grounding scent with a fresh lift. Nourish. Style. Refine — the complete grooming ritual for the intentional man.',
     benefits: [
@@ -323,11 +326,16 @@ export const products: Product[] = [
     slug: 'ashwagandha-infused-honey',
     name: 'Ashwagandha Infused Honey',
     category: 'Wellness Honey',
-    price: 100,
     rating: 4.8,
     reviews: 0,
+<<<<<<< HEAD
     image: '/IMG-20260331-WA0010.jpg',
     description: 'A calming adaptogen blend for stress relief, rest, and mood balance.',
+=======
+    image: '/placeholder.jpg',
+    description:
+      'A calming adaptogen blend for stress relief, rest, and mood balance.',
+>>>>>>> b5715c2c817f3471087963f4dedcba118ecd89fd
     longDescription:
       'Known for easing stress, promoting rest, and balancing mood. This raw honey infusion with Ashwagandha — a celebrated Ayurvedic adaptogen — is best enjoyed in the evening for relaxation and deep sleep. Simple, intentional, and deeply restorative. Available in approx 180g.',
     benefits: [
