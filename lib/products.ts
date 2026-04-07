@@ -218,14 +218,8 @@ export const products: Product[] = [
     category: 'Pain Relief',
     rating: 4.7,
     reviews: 0,
-<<<<<<< HEAD
     image: '/IMG-20260331-WA0007.jpg',
     description: 'A natural African herbal spray for vitality and overall well-being.',
-=======
-    image: '/placeholder.jpg',
-    description:
-      'A natural African herbal spray for vitality and overall well-being.',
->>>>>>> b5715c2c817f3471087963f4dedcba118ecd89fd
     longDescription:
       "A natural blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature's Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine and revered for their restorative properties. Available in 100ml.",
     benefits: [
@@ -328,14 +322,8 @@ export const products: Product[] = [
     category: 'Wellness Honey',
     rating: 4.8,
     reviews: 0,
-<<<<<<< HEAD
     image: '/IMG-20260331-WA0010.jpg',
     description: 'A calming adaptogen blend for stress relief, rest, and mood balance.',
-=======
-    image: '/placeholder.jpg',
-    description:
-      'A calming adaptogen blend for stress relief, rest, and mood balance.',
->>>>>>> b5715c2c817f3471087963f4dedcba118ecd89fd
     longDescription:
       'Known for easing stress, promoting rest, and balancing mood. This raw honey infusion with Ashwagandha — a celebrated Ayurvedic adaptogen — is best enjoyed in the evening for relaxation and deep sleep. Simple, intentional, and deeply restorative. Available in approx 180g.',
     benefits: [
