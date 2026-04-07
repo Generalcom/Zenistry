@@ -6,6 +6,7 @@ export interface Product {
   rating: number
   reviews: number
   price: number
+  originalPrice?: number | null
   image: string
   badge?: string
   description: string
@@ -25,6 +26,7 @@ export const products: Product[] = [
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0018-4CMssr6L5guBainW035jzrdsi1wsZf.jpg',
     badge: 'Bestseller',
+    price: 299,
     description: 'Adaptogenic honey blend for stress relief and immunity',
     longDescription:
       "Our Ashwagandha & Black Seed Oil Infused Honey is a powerhouse wellness blend combining two of nature's most revered healing ingredients. Ashwagandha is an ancient adaptogen known for easing stress, promoting rest, and balancing mood — best enjoyed in the evening for relaxation and deep sleep. Paired with black seed oil, used for centuries for its potent anti-inflammatory and immune-boosting properties. Each jar is handcrafted with pure raw honey.",
@@ -46,6 +48,7 @@ export const products: Product[] = [
     reviews: 89,
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0014-Ck81Pa4PLuMGrGjcuLDUSHMdRPfA3F.jpg',
+    price: 189,
     description: 'Pure honey infused with black seed oil for daily wellness support.',
     longDescription:
       'Pure raw honey carefully infused with cold-pressed black seed oil (Nigella sativa). Black seed oil has been treasured for thousands of years across many cultures for its remarkable healing properties — from supporting respiratory health to boosting immunity. Paired with the natural goodness of raw honey, this blend is both delicious and deeply nourishing for your body.',
@@ -68,6 +71,7 @@ export const products: Product[] = [
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0015-umyaVKdF9wtazQGpic6PevVDsNbBJT.jpg',
     badge: 'Premium',
+    price: 249,
     description: 'A mineral-rich vitality booster for natural energy and stamina.',
     longDescription:
       'This raw honey infusion with shilajit delivers natural energy, supports stamina, and enhances resilience. Shilajit is one of the most powerful substances in Ayurvedic medicine — a mineral-rich resin formed over centuries in Himalayan rock. Known as "the destroyer of weakness," it is revered for restoring vitality and supporting deep cellular energy. Perfect as a morning spoonful or stirred into warm tea.',
@@ -90,6 +94,7 @@ export const products: Product[] = [
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0021-Y257qdrVojSAHkr0VCrhGIt0ZvrPoP.jpg',
     badge: 'New',
+    price: 149,
     description:
       'A lightweight nourishing oil to deeply hydrate and support radiant, mature skin.',
     longDescription:
@@ -113,11 +118,11 @@ export const products: Product[] = [
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0007-yUMsZ36ZVH1JvAzljQegV0ybRFpBHI.jpg',
     description:
-      'A bi-phase serum that hydrates, tones and illuminates for a nourishing glow.',
+      'A bi-phase serum that hydrates, tones, and illuminates for a nourishing glow.',
     longDescription:
       'This bi-phase serum blends natural oils and floral waters to hydrate, tone, and illuminate. Perfect for skin in need of a nourishing boost and radiant glow. The water phase delivers brightening actives including Aloe and Rose Water, while the oil phase with Squalane seals in lasting moisture. Separation may occur — shake gently before use to activate both phases.',
     benefits: [
-      'Hydrates, tones and illuminates skin',
+      'Hydrates, tones, and illuminates skin',
       'Aloe and Rose Water for a brightening boost',
       'Squalane for deep, lasting moisture',
       'Suitable for skin needing a nourishing restoration',
@@ -135,6 +140,7 @@ export const products: Product[] = [
     image:
       'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0022-H7TeEV7MkcozQwvxc3HUECypz6NO0k.jpg',
     badge: 'Popular',
+    price: 199,
     description:
       'A gentle, pH-balanced bodywash with uplifting citrus and soft florals.',
     longDescription:
@@ -199,6 +205,7 @@ export const products: Product[] = [
     reviews: 0,
     image: '/placeholder.jpg',
     badge: 'New',
+    price: 149,
     description:
       'Targeted natural pain relief — powerful, non-toxic, fast-absorbing.',
     longDescription:
@@ -249,8 +256,7 @@ export const products: Product[] = [
       'African Wormwood for natural relief',
       'Helichrysum and Sutherlandia for restoration',
     ],
-    howToUse:
-      'Apply onto affected areas as required. Massage gently into the skin.',
+    howToUse: 'Apply onto affected areas as required.',
   },
   {
     id: '12',
@@ -261,6 +267,7 @@ export const products: Product[] = [
     reviews: 0,
     image: '/placeholder.jpg',
     badge: 'New',
+    price: 149,
     description:
       'Relieve, Restore, Recharge — eases muscles, cramps, and promotes restful sleep.',
     longDescription:
@@ -272,7 +279,7 @@ export const products: Product[] = [
       'Infused with calming essential oils',
     ],
     howToUse:
-      'Apply onto affected areas as required. Spray directly onto skin and massage in gently. Ideal for use before bed.',
+      'Apply onto affected areas as required. Spray directly onto the skin and massage in gently. Ideal for use before bed.',
   },
   {
     id: '13',
@@ -282,6 +289,7 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 0,
     image: '/placeholder.jpg',
+    price: 149,
     description: 'Pure protection, naturally — without synthetic chemicals.',
     longDescription:
       'Crafted with all natural ingredients to neutralize odour and keep you fresh — without synthetic chemicals. Lightly scented with essential oils for a clean, natural finish. Made with Shea Butter, Coconut Oil, and Bicarbonate of Soda to gently protect and nourish your underarms at the same time. A conscious switch for everyday freshness.',
@@ -302,19 +310,18 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 0,
     image: '/IMG-20260331-WA0008.jpg',
-    badge: 'New',
-    description:
-      'Nourish. Style. Refine — a lightweight conditioning cream for every beard.',
+    price: 149,
+    description: 'A premium beard cream for softness, shine, and healthy beard growth.',
     longDescription:
-      'A lightweight, conditioning cream crafted with Shea Butter, Jojoba, Lanolin, and Squalane to soften and strengthen your beard without greasiness. Infused with our signature essential oil blend including Cedarwood and Bergamot for a warm, grounding scent with a fresh lift. Nourish. Style. Refine — the complete grooming ritual for the intentional man.',
+      'A premium beard cream crafted with natural oils and butters to soften, condition, and add healthy shine to your beard. Enriched with Vitamin E and essential oils, this formula helps tame unruly hairs while promoting healthy growth. Perfect for daily use on all beard types.',
     benefits: [
-      'Softens and strengthens beard hair',
-      'Lightweight, non-greasy conditioning formula',
-      'Jojoba and Squalane for deep nourishment',
-      'Warm Cedarwood and Bergamot signature scent',
+      'Softens and conditions beard hair',
+      'Adds natural shine and healthy appearance',
+      'Promotes healthy beard growth',
+      'Enriched with Vitamin E and essential oils',
     ],
     howToUse:
-      'Apply a small amount to clean, dry or slightly damp beard. Work through the beard with your fingers from root to tip. Style as desired.',
+      'Apply a small amount to clean, slightly damp beard. Work through from root to tip. Style as desired.',
   },
   {
     id: '15',
@@ -324,6 +331,7 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 0,
     image: '/IMG-20260331-WA0010.jpg',
+    price: 149,
     description: 'A calming adaptogen blend for stress relief, rest, and mood balance.',
     longDescription:
       'Known for easing stress, promoting rest, and balancing mood. This raw honey infusion with Ashwagandha — a celebrated Ayurvedic adaptogen — is best enjoyed in the evening for relaxation and deep sleep. Simple, intentional, and deeply restorative. Available in approx 180g.',
@@ -338,23 +346,18 @@ export const products: Product[] = [
   },
 ]
 
-export function getProductById(id: string) {
-  return products.find((p) => p.id === id)
+export function getProduct(id: string): Product | undefined {
+  return products.find(p => p.id === id)
 }
 
-export function getProductBySlug(slug: string) {
-  return products.find((p) => p.slug === slug)
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find(p => p.slug === slug)
 }
 
-export function getProductsByCategory(category: string) {
-  return products.filter((p) => p.category === category)
+export function getProductsByCategory(category: string): Product[] {
+  return products.filter(p => p.category === category)
 }
 
-export const categories = [
-  { label: 'Wellness Honey', slug: 'Wellness+Honey' },
-  { label: 'Skincare', slug: 'Skincare' },
-  { label: 'Body Care', slug: 'Body+Care' },
-  { label: 'Pain Relief', slug: 'Pain+Relief' },
-  { label: "Men's Grooming", slug: "Men%27s+Grooming" },
-  { label: 'Aromatherapy', slug: 'Aromatherapy' },
-]
+export function getAllProducts(): Product[] {
+  return products
+}
