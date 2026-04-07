@@ -9,7 +9,7 @@ export interface UploadedImage {
   productId?: string
 }
 
-const STORAGE_KEY = 'zenestry-uploaded-images'
+const STORAGE_KEY = 'ZENistry-uploaded-images'
 
 export function uploadImage(file: File): Promise<UploadedImage> {
   return new Promise((resolve, reject) => {

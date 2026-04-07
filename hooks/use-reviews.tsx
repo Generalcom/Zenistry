@@ -26,7 +26,7 @@ export function ReviewProvider({ children }: { children: ReactNode }) {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('zenestry-reviews')
+    const saved = localStorage.getItem('ZENistry-reviews')
     if (saved) {
       try {
         const parsed: Review[] = JSON.parse(saved)
@@ -41,7 +41,7 @@ export function ReviewProvider({ children }: { children: ReactNode }) {
   // Save to localStorage when reviews change
   useEffect(() => {
     if (mounted) {
-      localStorage.setItem('zenestry-reviews', JSON.stringify(reviews))
+      localStorage.setItem('ZENistry-reviews', JSON.stringify(reviews))
     }
   }, [reviews, mounted])
 

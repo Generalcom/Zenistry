@@ -1,6 +1,6 @@
 import { products as defaultProducts, Product } from '@/lib/products'
 
-const OVERRIDES_KEY = 'zenestry-product-overrides'
+const OVERRIDES_KEY = 'ZENistry-product-overrides'
 
 export interface ProductOverride {
   price?: number

@@ -54,7 +54,7 @@ export const ORDER_STATUSES: {
   {
     key: 'delivered',
     label: 'Delivered',
-    description: 'Your order has been delivered. Enjoy your Zenestry products!',
+    description: 'Your order has been delivered. Enjoy your ZENistry products!',
   },
 ]
 
@@ -82,12 +82,12 @@ export function saveOrder(order: Order): void {
   if (typeof window === 'undefined') return
   const existing = getAllOrders()
   existing[order.trackingNumber] = order
-  localStorage.setItem('zenestry-orders', JSON.stringify(existing))
+  localStorage.setItem('ZENistry-orders', JSON.stringify(existing))
 }
 
 export function getAllOrders(): Record<string, Order> {
   if (typeof window === 'undefined') return {}
-  const raw = localStorage.getItem('zenestry-orders')
+  const raw = localStorage.getItem('ZENistry-orders')
   if (!raw) return {}
   try {
     return JSON.parse(raw)

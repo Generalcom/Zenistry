@@ -28,7 +28,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('zenestry-cart')
+    const savedCart = localStorage.getItem('ZENistry-cart')
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart))
@@ -42,7 +42,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Save to localStorage whenever items change
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('zenestry-cart', JSON.stringify(items))
+      localStorage.setItem('ZENistry-cart', JSON.stringify(items))
     }
   }, [items, isHydrated])
 

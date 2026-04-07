@@ -5,6 +5,7 @@ export interface Product {
   category: string
   rating: number
   reviews: number
+  price: number
   image: string
   badge?: string
   description: string

@@ -25,7 +25,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage on mount, stripping any legacy mock reviews
   useEffect(() => {
-    const savedReviews = localStorage.getItem('zenestry-reviews')
+    const savedReviews = localStorage.getItem('ZENistry-reviews')
     if (savedReviews) {
       try {
         const parsed: Review[] = JSON.parse(savedReviews)
@@ -41,7 +41,7 @@ export function ReviewProvider({ children }: { children: React.ReactNode }) {
   // Save to localStorage whenever reviews change
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('zenestry-reviews', JSON.stringify(reviews))
+      localStorage.setItem('ZENistry-reviews', JSON.stringify(reviews))
     }
   }, [reviews, isHydrated])
 
