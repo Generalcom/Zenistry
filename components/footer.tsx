@@ -32,9 +32,9 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/zenestry", label: "Instagram" },
-  { icon: Facebook, href: "https://www.facebook.com/zenestry", label: "Facebook" },
-  { icon: Youtube, href: "https://www.youtube.com/@zenestry", label: "YouTube" },
+  { icon: Instagram, href: "https://www.instagram.com/ZENistry", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/ZENistry", label: "Facebook" },
+  { icon: Youtube, href: "https://www.youtube.com/@ZENistry", label: "YouTube" },
 ]
 
 export function Footer() {
@@ -67,9 +67,9 @@ export function Footer() {
                 <Phone className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />
                 <span>082 827 7990</span>
               </a>
-              <a href="mailto:hello@zenestry.co.za" className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+              <a href="mailto:hello@ZENistry.co.za" className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                 <Mail className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />
-                <span>hello@zenestry.co.za</span>
+                <span>hello@ZENistry.co.za</span>
               </a>
               <p className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70">
                 <MapPin className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />

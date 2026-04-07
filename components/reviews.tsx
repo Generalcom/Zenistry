@@ -50,7 +50,7 @@ export function Reviews() {
             Loved by Our Community
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Real experiences from people who have made Zenestry part of their wellness journey
+            Real experiences from people who have made ZENistry part of their wellness journey
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export function Reviews() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Your Review</label>
                 <textarea
-                  placeholder="Tell us about your experience with Zenestry..."
+                  placeholder="Tell us about your experience with ZENistry..."
                   value={formData.comment}
                   onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                   className="w-full p-4 border border-border/50 rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"

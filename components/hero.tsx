@@ -92,7 +92,7 @@ export function Hero() {
               <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl animate-float">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0015-umyaVKdF9wtazQGpic6PevVDsNbBJT.jpg"
-                  alt="Zenestry honey collection"
+                  alt="ZENistry honey collection"
                   fill
                   className="object-cover"
                   priority

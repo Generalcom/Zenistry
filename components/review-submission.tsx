@@ -76,7 +76,7 @@ export function ReviewSubmission() {
           id="comment"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Share your thoughts about Zenestry products..."
+          placeholder="Share your thoughts about ZENistry products..."
           rows={4}
           className="w-full px-4 py-3 bg-background border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
           required

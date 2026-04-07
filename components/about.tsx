@@ -63,7 +63,7 @@ export function About() {
               <div className="col-span-2 aspect-[4/3] rounded-lg md:rounded-2xl overflow-hidden relative">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG-20260320-WA0015-umyaVKdF9wtazQGpic6PevVDsNbBJT.jpg"
-                  alt="Zenestry honey collection"
+                  alt="ZENistry honey collection"
                   fill
                   className="object-cover"
                 />
@@ -115,7 +115,7 @@ export function About() {
               </h2>
               <div className="space-y-3 md:space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">
                 <p>
-                  At Zenestry, we believe that true beauty comes from within. Our journey began with a 
+                  At ZENistry, we believe that true beauty comes from within. Our journey began with a 
                   simple mission: to create products that nourish not just your skin, but your entire being.
                 </p>
                 <p>

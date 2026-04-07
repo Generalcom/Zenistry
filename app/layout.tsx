@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Zenestry | Beauty & Lifestyle - Skincare, Wellness & Podcast',
+  title: 'ZENistry | Beauty & Lifestyle - Skincare, Wellness & Podcast',
   description: 'Discover natural skincare and wellness products crafted with love. Infused honeys, serums, body care, and mental wellness podcast for holistic living.',
   keywords: ['skincare', 'wellness', 'natural products', 'honey', 'podcast', 'mental health', 'body care'],
   generator: 'v0.app',

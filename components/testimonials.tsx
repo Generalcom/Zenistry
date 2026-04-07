@@ -41,7 +41,7 @@ export function Testimonials() {
             Loved by Our Community
           </h2>
           <p className="text-muted-foreground">
-            Real feedback from customers who have experienced Zenestry
+            Real feedback from customers who have experienced ZENistry
           </p>
         </div>
 

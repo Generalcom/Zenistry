@@ -87,7 +87,7 @@ function TrackingContent() {
             </span>
             <h1 className="font-serif text-4xl lg:text-5xl text-foreground">Track Your Order</h1>
             <p className="text-muted-foreground">
-              Enter your tracking number to see where your Zenestry order is right now.
+              Enter your tracking number to see where your ZENistry order is right now.
             </p>
           </div>
         </div>

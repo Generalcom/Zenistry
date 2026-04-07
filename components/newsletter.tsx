@@ -55,7 +55,7 @@ export function Newsletter() {
             </div>
 
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-3 md:mb-4">
-              Join the Zenestry Community
+              Join ZENistry Community
             </h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 leading-relaxed">
               Subscribe to receive exclusive offers, wellness tips, new product announcements, 

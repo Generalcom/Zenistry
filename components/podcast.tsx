@@ -47,7 +47,7 @@ export function Podcast() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}>
             <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent text-sm font-medium rounded-full mb-4">
-              The Zenestry Podcast
+              The ZENistry Podcast
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-foreground mb-4">
               Conversations for the Soul
@@ -71,7 +71,7 @@ export function Podcast() {
 
             <h3 className="font-serif text-3xl text-foreground mb-3">Coming Soon</h3>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              The Zenestry podcast is launching very soon. Be among the first to listen to our inaugural episodes.
+              The ZENistry podcast is launching very soon. Be among the first to listen to our inaugural episodes.
             </p>
 
             {/* Email Signup */}

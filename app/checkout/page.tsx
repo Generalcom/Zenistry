@@ -34,7 +34,7 @@ export default function CheckoutPage() {
     const left = Math.round(window.screenX + (window.outerWidth - w) / 2)
     const top = Math.round(window.screenY + (window.outerHeight - h) / 2)
     window.open(
-      'https://pay.ikhokha.com/zenistry-skincare--wellness/buy/zenistry',
+      'https://pay.ikhokha.com/ZENistry-skincare--wellness/buy/ZENistry',
       'ikhokha-payment',
       `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
     )
@@ -194,7 +194,7 @@ export default function CheckoutPage() {
                   <div className="p-6 space-y-4">
                     {[
                       { label: 'PayShap Number', value: '082 827 7990', copy: '0828277990' },
-                      { label: 'Account Name',   value: 'Angela / Zenestry', copy: 'Zenestry' },
+                      { label: 'Account Name',   value: 'Angela / ZENistry', copy: 'ZENistry' },
                       { label: 'Amount',         value: `R ${total.toFixed(2)}`, copy: total.toFixed(2) },
                       { label: 'Reference',      value: trackingNumber, copy: trackingNumber },
                     ].map(({ label, value, copy }) => (
