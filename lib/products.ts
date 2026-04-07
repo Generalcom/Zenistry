@@ -219,7 +219,7 @@ export const products: Product[] = [
     price: 130,
     rating: 4.7,
     reviews: 0,
-    image: '/placeholder.jpg',
+    image: '/IMG-20260331-WA0007.jpg',
     description: 'A natural African herbal spray for vitality and overall well-being.',
     longDescription:
       'A natural blend of African herbs traditionally valued for supporting vitality and overall well-being. Wellness, Nature\'s Way. Formulated with African Wormwood, Helichrysum, and Sutherlandia — herbs rooted in African traditional medicine and revered for their restorative properties. Available in 100ml.',
@@ -304,7 +304,7 @@ export const products: Product[] = [
     price: 180,
     rating: 4.8,
     reviews: 0,
-    image: '/placeholder.jpg',
+    image: '/IMG-20260331-WA0008.jpg',
     badge: 'New',
     description: 'Nourish. Style. Refine — a lightweight conditioning cream for every beard.',
     longDescription:
@@ -326,7 +326,7 @@ export const products: Product[] = [
     price: 100,
     rating: 4.8,
     reviews: 0,
-    image: '/placeholder.jpg',
+    image: '/IMG-20260331-WA0010.jpg',
     description: 'A calming adaptogen blend for stress relief, rest, and mood balance.',
     longDescription:
       'Known for easing stress, promoting rest, and balancing mood. This raw honey infusion with Ashwagandha — a celebrated Ayurvedic adaptogen — is best enjoyed in the evening for relaxation and deep sleep. Simple, intentional, and deeply restorative. Available in approx 180g.',
