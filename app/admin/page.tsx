@@ -21,11 +21,12 @@ import {
   LogOut, Save, RotateCcw, Eye, EyeOff, Download, Upload,
   Package, ShoppingBag, ArrowUpRight, ImageIcon, ChevronDown,
   ChevronUp, Truck, CheckCircle2, TrendingUp, BarChart2, Clock,
-  Banknote, ArrowRight,
+  Banknote, ArrowRight, Shield,
 } from 'lucide-react'
+import { PasswordChange } from '@/components/admin/password-change'
+import { getCurrentPassword, initializePassword } from '@/lib/password-manager'
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'zenestry2026'
-const SESSION_KEY = 'zenestry-admin-auth'
+const SESSION_KEY = 'ZENistry-admin-auth'
 const BADGE_OPTIONS = ['', 'Bestseller', 'New', 'Premium', 'Popular', 'Sale']
 const PAID_STATUSES: OrderStatus[] = ['confirmed', 'packaged', 'out_for_delivery', 'delivered']
 
@@ -39,15 +40,55 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [pw, setPw] = useState('')
   const [show, setShow] = useState(false)
   const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasPassword, setHasPassword] = useState<boolean | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Check if password is already set
+    const checkPassword = async () => {
+      try {
+        const currentPassword = await getCurrentPassword()
+        setHasPassword(!!currentPassword)
+      } catch (error) {
+        console.error('Error checking password:', error)
+        setHasPassword(false)
+      }
+    }
+    checkPassword()
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (pw === ADMIN_PASSWORD) {
-      sessionStorage.setItem(SESSION_KEY, '1')
-      onLogin()
-    } else {
+    setIsLoading(true)
+    
+    try {
+      const currentPassword = await getCurrentPassword()
+      
+      // If no password exists, initialize with the provided password
+      if (!currentPassword) {
+        const result = await initializePassword(pw)
+        if (result.success) {
+          sessionStorage.setItem(SESSION_KEY, '1')
+          onLogin()
+        } else {
+          setError(true)
+          setTimeout(() => setError(false), 2000)
+        }
+      } else {
+        // Verify against existing password
+        if (pw === currentPassword) {
+          sessionStorage.setItem(SESSION_KEY, '1')
+          onLogin()
+        } else {
+          setError(true)
+          setTimeout(() => setError(false), 2000)
+        }
+      }
+    } catch (error) {
       setError(true)
       setTimeout(() => setError(false), 2000)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -76,12 +117,20 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             </div>
             {error && <p className="text-destructive text-xs">Incorrect password.</p>}
           </div>
-          <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">Log In</Button>
+          <Button type="submit" disabled={isLoading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+          {isLoading ? 'Logging in...' : 'Log In'}
+        </Button>
         </form>
-        <p className="text-center text-xs text-muted-foreground">
-          Default password: <code className="bg-secondary px-1 rounded">zenestry2026</code>
-          <br />Set <code className="bg-secondary px-1 rounded">NEXT_PUBLIC_ADMIN_PASSWORD</code> in your environment to change it.
-        </p>
+        {hasPassword === false && (
+          <p className="text-center text-xs text-muted-foreground">
+            First time setup: Enter a secure password to initialize admin access.
+          </p>
+        )}
+        {hasPassword === true && (
+          <p className="text-center text-xs text-muted-foreground">
+            Enter your admin password to access the dashboard.
+          </p>
+        )}
       </div>
     </div>
   )
@@ -554,7 +603,7 @@ function OrdersPanel() {
 // ── Main Admin ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
-  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders'>('sales')
+  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders' | 'settings'>('sales')
   const [overrides, setOverrides] = useState<Record<string, ProductOverride>>({})
   const importRef = useRef<HTMLInputElement>(null)
 
@@ -620,6 +669,7 @@ export default function AdminPage() {
     { key: 'sales' as const, label: 'Sales', icon: BarChart2 },
     { key: 'products' as const, label: 'Products', icon: Package },
     { key: 'orders' as const, label: 'Orders', icon: Truck },
+    { key: 'settings' as const, label: 'Settings', icon: Shield },
   ]
 
   return (
@@ -707,6 +757,18 @@ export default function AdminPage() {
               Update order statuses here. Confirmed orders count toward sales revenue.
             </p>
             <OrdersPanel />
+          </div>
+        )}
+
+        {/* Settings tab */}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            <p className="text-sm text-muted-foreground">
+              Manage your admin account settings and security preferences.
+            </p>
+            <PasswordChange onPasswordChanged={() => {
+              toast.success('Password changed successfully!')
+            }} />
           </div>
         )}
 
