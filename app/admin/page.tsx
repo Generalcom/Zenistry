@@ -21,9 +21,10 @@ import {
   LogOut, Save, RotateCcw, Eye, EyeOff, Download, Upload,
   Package, ShoppingBag, ArrowUpRight, ImageIcon, ChevronDown,
   ChevronUp, Truck, CheckCircle2, TrendingUp, BarChart2, Clock,
-  Banknote, ArrowRight, Shield,
+  Banknote, ArrowRight, Shield, FileText,
 } from 'lucide-react'
 import { PasswordChange } from '@/components/admin/password-change'
+import { ContentDashboard } from '@/components/admin/content-dashboard'
 import { getCurrentPassword, initializePassword } from '@/lib/password-manager'
 
 const SESSION_KEY = 'ZENistry-admin-auth'
@@ -603,7 +604,7 @@ function OrdersPanel() {
 // ── Main Admin ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
-  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders' | 'settings'>('sales')
+  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders' | 'content' | 'settings'>('sales')
   const [overrides, setOverrides] = useState<Record<string, ProductOverride>>({})
   const importRef = useRef<HTMLInputElement>(null)
 
@@ -669,6 +670,7 @@ export default function AdminPage() {
     { key: 'sales' as const, label: 'Sales', icon: BarChart2 },
     { key: 'products' as const, label: 'Products', icon: Package },
     { key: 'orders' as const, label: 'Orders', icon: Truck },
+    { key: 'content' as const, label: 'Content', icon: FileText },
     { key: 'settings' as const, label: 'Settings', icon: Shield },
   ]
 
@@ -757,6 +759,13 @@ export default function AdminPage() {
               Update order statuses here. Confirmed orders count toward sales revenue.
             </p>
             <OrdersPanel />
+          </div>
+        )}
+
+        {/* Content tab */}
+        {activeTab === 'content' && (
+          <div className="space-y-6">
+            <ContentDashboard />
           </div>
         )}
 
