@@ -220,71 +220,10 @@ export function ContactManagement() {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value as any)}
-              className="w-full px-3 py-2 border border-border/50 rounded-lg focus:border-accent bg-background text-sm"
-            >
-              <option value="all">All Status</option>
-              <option value="new">New</option>
-              <option value="read">Read</option>
-              <option value="replied">Replied</option>
-            </select>
-          </div>
-        </div>
-      </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-card rounded-lg border border-border/50 p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <Mail className="w-5 h-5 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-semibold text-foreground">
-                {submissions.filter(s => s.status === 'new').length}
-              </p>
-              <p className="text-sm text-muted-foreground">New Messages</p>
-            </div>
-          </div>
-          
-          <div className="bg-card rounded-lg border border-border/50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                <Eye className="w-5 h-5 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">
-                  {submissions.filter(s => s.status === 'read').length}
-                </p>
-                <p className="text-sm text-muted-foreground">Read Messages</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-card rounded-lg border border-border/50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                <Reply className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">
-                  {submissions.filter(s => s.status === 'replied').length}
-                </p>
-                <p className="text-sm text-muted-foreground">Replied Messages</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-card rounded-lg border border-border/50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{submissions.length}</p>
-                <p className="text-sm text-muted-foreground">Total Messages</p>
-              </div>
-            </div>
-          </div>
+  if (selectedCategory !== 'all') {
+    filtered = filtered.filter(sub => sub.category === selectedCategory)
+  }
         </div>
       </div>
 
@@ -442,48 +381,240 @@ export function ContactManagement() {
                   <p className="text-foreground">{selectedSubmission.email}</p>
                 </div>
               </div>
-              
-              {selectedSubmission.phone && (
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1">Phone</label>
-                  <p className="text-foreground">{selectedSubmission.phone}</p>
+
+              {/* New Messages */}
+              <div className="bg-card rounded-lg border border-border/50 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <Eye className="w-5 h-5 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-foreground">
+                      {filteredSubmissions.filter((s) => s.status === 'new').length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">New Messages</p>
+                  </div>
                 </div>
-              )}
-              
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Category</label>
+              </div>
+
+              {/* Read Messages */}
+              <div className="bg-card rounded-lg border border-border/50 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <Reply className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-foreground">
+                      {filteredSubmissions.filter((s) => s.status === 'read').length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Read Messages</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Replied Messages */}
+              <div className="bg-card rounded-lg border border-border/50 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-foreground">
+                      {filteredSubmissions.filter((s) => s.status === 'replied').length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Replied Messages</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Total Messages */}
+              <div className="bg-card rounded-lg border border-border/50 p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-semibold text-foreground">{filteredSubmissions.length}</p>
+                    <p className="text-sm text-muted-foreground">Total Messages</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submissions List */}
+              {isLoading ? (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">Loading contact submissions...</p>
+                </div>
+              ) : filteredSubmissions.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">No contact submissions found</p>
+                  <p className="text-sm text-muted-foreground">
+                    {searchTerm || selectedCategory !== 'all' || selectedStatus !== 'all' 
+                      ? 'Try adjusting your filters' 
+                      : 'No submissions yet'}
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-card rounded-lg border border-border/50">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-border/50">
+                          <th className="text-left p-4 font-medium text-foreground">Name</th>
+                          <th className="text-left p-4 font-medium text-foreground">Email</th>
+                          <th className="text-left p-4 font-medium text-foreground">Category</th>
+                          <th className="text-left p-4 font-medium text-foreground">Subject</th>
+                          <th className="text-left p-4 font-medium text-foreground">Date</th>
+                          <th className="text-left p-4 font-medium text-foreground">Status</th>
+                          <th className="text-left p-4 font-medium text-foreground">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredSubmissions.map((submission) => (
+                          <tr 
+                            key={submission.id} 
+                            className="border-b border-border/50 hover:bg-accent/5 transition-colors"
+                          >
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                                <span className="font-medium">{submission.name}</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm">{submission.email}</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                {getCategoryIcon(submission.category)}
+                                <span className="text-sm">{submission.category}</span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="max-w-xs">
+                                <p className="text-sm font-medium truncate">{submission.subject}</p>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm">
+                                  {new Date(submission.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="p-4">
+                              <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(submission.status)}`}>
+                                {submission.status}
+                              </span>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setSelectedSubmission(submission)}
+                                  className="gap-1"
+                                >
+                                  <Eye className="w-3 h-3" />
+                                  View
+                                </Button>
+                                
+                                {submission.status === 'new' && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => updateSubmissionStatus(submission.id, 'read')}
+                                    className="gap-1"
+                                  >
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    Mark Read
+                                  </Button>
+                                )}
+                                
+                                {submission.status === 'read' && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => updateSubmissionStatus(submission.id, 'replied')}
+                                    className="gap-1"
+                                  >
+                                    <Reply className="w-3 h-3" />
+                                    Mark Replied
+                                  </Button>
+                                )}
+                                
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => deleteSubmission(submission.id)}
+                                  className="gap-1 text-red-600 hover:text-red-700"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                  Delete
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
                 <div className="flex items-center gap-2">
-                  {getCategoryIcon(selectedSubmission.category)}
-                  <span className="text-foreground capitalize">{selectedSubmission.category}</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSelectedSubmission(submission)}
+                    className="gap-1"
+                  >
+                    <Eye className="w-3 h-3" />
+                    View
+                  </Button>
+                  
+                  {submission.status === 'new' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => updateSubmissionStatus(submission.id, 'read')}
+                      className="gap-1"
+                    >
+                      <CheckCircle2 className="w-3 h-3" />
+                      Mark Read
+                    </Button>
+                  )}
+                  
+                  {submission.status === 'read' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => updateSubmissionStatus(submission.id, 'replied')}
+                      className="gap-1"
+                    >
+                      <Reply className="w-3 h-3" />
+                      Mark Replied
+                    </Button>
+                  )}
+                  
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => deleteSubmission(submission.id)}
+                    className="gap-1 text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    Delete
+                  </Button>
                 </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Subject</label>
-                <p className="text-foreground">{selectedSubmission.subject}</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Message</label>
-                <p className="text-foreground whitespace-pre-wrap bg-secondary/30 p-3 rounded-lg">
-                  {selectedSubmission.message}
-                </p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Submitted</label>
-                <p className="text-foreground">
-                  {new Date(selectedSubmission.createdAt).toLocaleString()}
-                </p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1">Status</label>
-                <span className={`px-2 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedSubmission.status)}`}>
-                  {selectedSubmission.status}
-                </span>
-              </div>
-            </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
             
             <div className="flex gap-3 pt-4 border-t border-border/50">
               {selectedSubmission.status === 'new' && (

@@ -137,7 +137,7 @@ export function ContactForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="john@example.com"
+                    placeholder="Enter your email"
                     required
                     className="w-full"
                   />
@@ -154,7 +154,7 @@ export function ContactForm() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    placeholder="+27 82 123 4567"
+                    placeholder="Enter your phone number"
                     className="w-full"
                   />
                 </div>
