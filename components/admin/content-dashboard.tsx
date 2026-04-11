@@ -12,9 +12,10 @@ import {
 import { ContentSection, BlogPost, getAllContentSections, getAllBlogPosts, deleteContentSection, deleteBlogPost } from '@/lib/content-manager'
 import { ContentEditor } from './content-editor'
 import { BlogEditor } from './blog-editor'
+import { ContactManagement } from './contact-management'
 
 export function ContentDashboard() {
-  const [activeTab, setActiveTab] = useState<'content' | 'blog'>('content')
+  const [activeTab, setActiveTab] = useState<'content' | 'blog' | 'contact'>('content')
   const [contentSections, setContentSections] = useState<ContentSection[]>([])
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -185,13 +186,10 @@ export function ContentDashboard() {
 
       {/* Tabs */}
       <div className="flex gap-1 bg-gray-100 p-1 rounded-lg w-fit">
-        {[
-          { key: 'content', label: 'Website Content', icon: FileText },
-          { key: 'blog', label: 'Blog Posts', icon: Edit3 },
-        ].map(({ key, label, icon: Icon }) => (
+        {TABS.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
-            onClick={() => setActiveTab(key as 'content' | 'blog')}
+            onClick={() => setActiveTab(key as 'content' | 'blog' | 'contact')}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
               activeTab === key
                 ? 'bg-white text-gray-900 shadow-sm'
@@ -409,6 +407,117 @@ export function ContentDashboard() {
             </div>
           ))}
         </div>
+      )}
+      {activeTab === 'content' && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-foreground">Website Content</h3>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setEditingItem({})}
+                variant="outline"
+                size="sm"
+                className="gap-1"
+              >
+                <Plus className="w-4 h-4" />
+                Add Content
+              </Button>
+              <Button
+                onClick={() => setEditingItem({})}
+                variant="outline"
+                size="sm"
+                className="gap-1"
+              >
+                <Upload className="w-4 h-4" />
+                Import
+              </Button>
+            </div>
+          </div>
+          {editingItem && (
+            <ContentEditor
+              section={editingItem}
+              onSave={(section) => {
+                setEditingItem(null)
+                setContentSections(prev => 
+                  prev.map(s => s.id === section.id ? section : s)
+                )
+                toast.success('Content updated successfully')
+              }}
+              onCancel={() => setEditingItem(null)}
+            />
+          )}
+          <div className="bg-card rounded-lg border border-border/50">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-border/50">
+                    <th className="text-left p-4 font-medium text-foreground">Title</th>
+                    <th className="text-left p-4 font-medium text-foreground">Type</th>
+                    <th className="text-left p-4 font-medium text-foreground">Category</th>
+                    <th className="text-left p-4 font-medium text-foreground">Updated</th>
+                    <th className="text-left p-4 font-medium text-foreground">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contentSections.map((section) => (
+                    <tr 
+                      key={section.id} 
+                      className="border-b border-border/50 hover:bg-accent/5 transition-colors"
+                    >
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          {section.type === 'text' && <FileText className="w-4 h-4 text-muted-foreground" />}
+                          {section.type === 'image' && <ImageIcon className="w-4 h-4 text-muted-foreground" />}
+                          {section.type === 'html' && <Edit3 className="w-4 h-4 text-muted-foreground" />}
+                        </div>
+                        <span className="font-medium">{section.title}</span>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          {section.metadata?.category && (
+                            <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
+                              {section.metadata.category}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="p-4">
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(section.updatedAt).toLocaleDateString()}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setEditingItem(section)}
+                            className="gap-1"
+                          >
+                            <Eye className="w-3 h-3" />
+                            Edit
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => deleteContentSection(section.id)}
+                            className="gap-1 text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+      {activeTab === 'contact' && (
+        <ContactManagement />
       )}
     </div>
   )

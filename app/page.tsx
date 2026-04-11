@@ -6,6 +6,7 @@ import { About } from "@/components/about-dynamic"
 import { Podcast } from "@/components/podcast"
 import { Testimonials } from "@/components/testimonials-dynamic"
 import { Newsletter } from "@/components/newsletter-dynamic"
+import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer-dynamic"
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       <Podcast />
       <Testimonials />
       <Newsletter />
+      <ContactForm />
       <Footer />
     </main>
   )
