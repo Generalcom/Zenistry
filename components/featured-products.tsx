@@ -3,199 +3,213 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Heart, ChevronLeft, ChevronRight, ArrowRight, Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useCart } from "@/hooks/use-cart"
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
 import { useProducts } from "@/hooks/use-products"
-import { toast } from "sonner"
 
 export function FeaturedProducts() {
-  const { addToCart } = useCart()
   const products = useProducts()
   const [visibleProducts, setVisibleProducts] = useState<string[]>([])
-  const [addedItems, setAddedItems] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(0)
+  const [headerVisible, setHeaderVisible] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  const displayProducts = products.slice(0, 6)
+  const totalPages = displayProducts.length
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute("data-product-id")
-            if (id) {
-              setVisibleProducts((prev) => [...new Set([...prev, id])])
-            }
-          }
-        })
-      },
-      { threshold: 0.2 }
+    const headerObs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setHeaderVisible(true) },
+      { threshold: 0.3 }
     )
-
-    const productCards = document.querySelectorAll("[data-product-id]")
-    productCards.forEach((card) => observer.observe(card))
-
-    return () => observer.disconnect()
+    if (headerRef.current) headerObs.observe(headerRef.current)
+    return () => headerObs.disconnect()
   }, [])
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          displayProducts.forEach((p, i) => {
+            setTimeout(() => {
+              setVisibleProducts((prev) => [...new Set([...prev, p.id])])
+            }, i * 110)
+          })
+        }
+      },
+      { threshold: 0.12 }
+    )
+    if (sectionRef.current) obs.observe(sectionRef.current)
+    return () => obs.disconnect()
+  }, [products])
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = direction === "left" ? -400 : 400
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" })
+      scrollRef.current.scrollBy({ left: direction === "left" ? -340 : 340, behavior: "smooth" })
     }
   }
 
-  const handleAddToCart = (product: typeof products[0]) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-    })
-    setAddedItems([...addedItems, product.id])
-    toast.success(`${product.name.split(' ').slice(0, 3).join(' ')}… added to cart`)
-    setTimeout(() => {
-      setAddedItems((prev) => prev.filter((id) => id !== product.id))
-    }, 2000)
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
+      const maxScroll = scrollWidth - clientWidth
+      const page = maxScroll > 0 ? Math.round((scrollLeft / maxScroll) * (totalPages - 1)) : 0
+      setCurrentPage(page)
+    }
   }
 
   return (
-    <section id="shop" className="py-20 lg:py-32 bg-secondary/30">
-      <div className="container mx-auto px-4 lg:px-8">
+    <section id="shop" className="py-24 lg:py-32 bg-background texture-bg">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10">
+
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-          <div className="space-y-4">
-            <span className="inline-block px-4 py-1.5 bg-accent/10 text-accent text-sm font-medium rounded-full">
-              Our Products
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-foreground">
-              Featured Collection
+        <div
+          ref={headerRef}
+          className={`flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-6 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <div>
+            <span className="section-label mb-4 block">Our Products</span>
+            <h2
+              className="font-serif text-foreground"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400 }}
+            >
+              Intentionally Formulated
             </h2>
-            <p className="text-muted-foreground max-w-xl">
-              Handcrafted with love and nature&apos;s finest ingredients. Each product is designed to 
-              nourish your body, calm your mind, and elevate your daily rituals.
-            </p>
+            <div className="divider-line mt-4" />
           </div>
-          <div className="hidden sm:flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="icon"
+          <div className="flex items-center gap-3">
+            <button
               onClick={() => scroll("left")}
-              className="rounded-full border-border hover:bg-accent/10"
+              className="hidden sm:flex w-10 h-10 rounded-full border border-border items-center justify-center text-foreground/50 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-200"
+              aria-label="Scroll left"
             >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
               onClick={() => scroll("right")}
-              className="rounded-full border-border hover:bg-accent/10"
+              className="hidden sm:flex w-10 h-10 rounded-full border border-border items-center justify-center text-foreground/50 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-200"
+              aria-label="Scroll right"
             >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <Link
+              href="/shop"
+              className="hidden sm:inline-flex items-center gap-2 text-[11px] tracking-[0.18em] uppercase font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              View All
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
 
-        {/* Products Grid - Horizontal Scroll on Mobile */}
-        <div 
-          ref={scrollRef}
-          className="flex lg:grid lg:grid-cols-3 gap-6 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 snap-x snap-mandatory scrollbar-hide"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {products.slice(0, 6).map((product, index) => (
-            <div
-              key={product.id}
-              data-product-id={product.id}
-              className={`flex-shrink-0 w-[268px] sm:w-80 lg:w-auto snap-start group transition-all duration-700 ${
-                visibleProducts.includes(product.id)
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <div className="bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-xl">
-                {/* Image Container */}
-                <Link href={`/shop/${product.id}`} className="block relative aspect-square overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+        {/* Products row */}
+        <div ref={sectionRef}>
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex lg:grid lg:grid-cols-3 gap-5 lg:gap-6 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 snap-x snap-mandatory scrollbar-hide"
+          >
+            {displayProducts.map((product, index) => (
+              <div
+                key={product.id}
+                data-product-id={product.id}
+                className={`flex-shrink-0 w-[72vw] sm:w-80 lg:w-auto snap-start card-lift transition-all duration-700 ${
+                  visibleProducts.includes(product.id)
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: `${index * 90}ms` }}
+              >
+                <div className="group bg-card rounded-2xl overflow-hidden border border-border/30">
+                  {/* Image */}
+                  <Link href={`/shop/${product.id}`} className="block relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-108"
+                      style={{ transformOrigin: 'center' }}
+                      sizes="(max-width: 768px) 72vw, 33vw"
+                    />
 
-                  {/* Badge */}
-                  {product.badge && (
-                    <span className="absolute top-4 left-4 px-3 py-1 bg-accent text-accent-foreground text-xs font-medium rounded-full">
-                      {product.badge}
-                    </span>
-                  )}
+                    {/* Overlay on hover */}
+                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/8 transition-all duration-500" />
 
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300" />
-                </Link>
+                    {/* Badge */}
+                    {product.badge && (
+                      <span
+                        className="absolute top-3.5 left-3.5 px-3 py-1 text-[9px] font-medium tracking-[0.18em] uppercase"
+                        style={{ backgroundColor: 'oklch(0.40 0.072 148)', color: '#fff', borderRadius: 0 }}
+                      >
+                        {product.badge}
+                      </span>
+                    )}
 
-                {/* Content */}
-                <div className="p-5 space-y-3">
-                  <p className="text-xs uppercase tracking-wider text-accent font-medium">
-                    {product.category}
-                  </p>
-                  <Link href={`/shop/${product.id}`}>
-                    <h3 className="font-serif text-lg font-medium text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                      {product.name}
-                    </h3>
+                    {/* Quick shop label */}
+                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-foreground/90 backdrop-blur-sm py-3 text-center">
+                      <span className="text-primary-foreground text-[10px] tracking-[0.22em] uppercase font-medium">
+                        Quick View
+                      </span>
+                    </div>
                   </Link>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {product.description}
-                  </p>
 
-                  {/* Rating */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-accent text-accent" />
-                      <span className="text-sm font-medium">{product.rating}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
-                  </div>
-
-                  {/* Price */}
-                  <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xl font-semibold text-foreground">R {product.price}</span>
-                      {product.originalPrice && (
-                        <span className="text-sm text-muted-foreground line-through">
-                          R {product.originalPrice}
-                        </span>
-                      )}
-                    </div>
-                    <Button
-                      size="sm"
-                      onClick={() => handleAddToCart(product)}
-                      className={`rounded-full transition-all ${
-                        addedItems.includes(product.id)
-                          ? "bg-green-600 hover:bg-green-700 text-white"
-                          : "bg-primary text-primary-foreground hover:bg-primary/90"
-                      }`}
+                  {/* Card content */}
+                  <div className="p-5 pb-6">
+                    <Link href={`/shop/${product.id}`}>
+                      <h3
+                        className="font-serif text-foreground group-hover:text-primary transition-colors duration-200 mb-1 text-center"
+                        style={{ fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.35 }}
+                      >
+                        {product.name}
+                      </h3>
+                    </Link>
+                    {product.price != null && (
+                      <p className="text-center text-sm font-medium text-muted-foreground mb-4">
+                        R{Number(product.price).toFixed(2)}
+                      </p>
+                    )}
+                    <Link
+                      href={`/shop/${product.id}`}
+                      className="btn-primary w-full justify-center text-[10px]"
+                      style={{ borderRadius: '8px', padding: '0.65rem 1rem' }}
                     >
-                      {addedItems.includes(product.id) ? "✓" : "Add"}
-                    </Button>
+                      Add to Cart
+                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* View All Button */}
-        <div className="flex justify-center mt-12">
-          <Button
-            variant="outline"
-            size="lg"
-            className="border-primary/30 hover:bg-primary/5 group px-8"
-            onClick={() => { window.location.href = '/shop' }}
-          >
+        {/* Mobile dots + CTA */}
+        <div className="mt-8 flex flex-col items-center gap-5 lg:hidden">
+          <div className="flex gap-2">
+            {displayProducts.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  if (scrollRef.current) {
+                    const { scrollWidth, clientWidth } = scrollRef.current
+                    scrollRef.current.scrollTo({
+                      left: (i / (totalPages - 1)) * (scrollWidth - clientWidth),
+                      behavior: 'smooth',
+                    })
+                  }
+                }}
+                className={`rounded-full transition-all duration-300 ${
+                  i === currentPage ? 'w-6 h-1.5 bg-primary' : 'w-1.5 h-1.5 bg-border hover:bg-primary/40'
+                }`}
+                aria-label={`Go to product ${i + 1}`}
+              />
+            ))}
+          </div>
+          <Link href="/shop" className="btn-primary rounded-lg px-8">
             View All Products
-            <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

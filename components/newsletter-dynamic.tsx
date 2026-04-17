@@ -1,10 +1,16 @@
 'use client'
 
 import { useEffect, useRef, useState } from "react"
-import { Mail, ArrowRight, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Mail, ArrowRight, Gift, Sparkles, Zap, Users } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { DynamicContent } from "./dynamic-content"
+
+const benefits = [
+  { icon: Gift, title: "10% Off", desc: "Your first order" },
+  { icon: Zap, title: "Early Access", desc: "New products" },
+  { icon: Sparkles, title: "Weekly Tips", desc: "Wellness advice" },
+  { icon: Users, title: "Exclusive", desc: "Member offers" },
+]
 
 export function Newsletter() {
   const [isVisible, setIsVisible] = useState(false)
@@ -14,18 +20,10 @@ export function Newsletter() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.2 }
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true) },
+      { threshold: 0.15 }
     )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
 
@@ -38,126 +36,102 @@ export function Newsletter() {
   }
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-20 lg:py-32">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className={`relative max-w-4xl mx-auto transition-all duration-700 ${
-          isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+    <section
+      ref={sectionRef}
+      className="relative py-24 lg:py-36 overflow-hidden"
+      style={{ background: 'oklch(0.96 0.014 80)' }}
+    >
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, oklch(0.40 0.072 148) 0%, transparent 70%)' }} />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        <div className={`max-w-2xl mx-auto text-center transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
-          {/* Background Decoration */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 rounded-2xl md:rounded-3xl" />
-          <div className="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-48 bg-accent/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/10 rounded-full blur-3xl" />
-          
-          {/* Content */}
-          <div className="relative p-6 md:p-8 lg:p-16 text-center">
-            {/* Icon */}
-            <div className="inline-flex items-center justify-center w-12 md:w-16 h-12 md:h-16 rounded-full bg-accent/10 mb-4 md:mb-6">
-              <Sparkles className="w-6 md:w-8 h-6 md:h-8 text-accent" />
+
+          {/* Icon */}
+          <div
+            className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-6"
+            style={{ background: 'oklch(0.40 0.072 148 / 0.10)' }}
+          >
+            <Mail className="w-6 h-6 text-primary" />
+          </div>
+
+          <span className="section-label mb-5 block mx-auto w-fit">Newsletter</span>
+
+          <h2
+            className="font-serif text-foreground mb-4"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, lineHeight: 1.2 }}
+          >
+            <DynamicContent sectionId="newsletter-title" fallback="Join the ZENistry Community" />
+          </h2>
+
+          <div className="divider-center mx-auto mt-4 mb-6" />
+
+          <p className="text-muted-foreground text-[0.9375rem] max-w-lg mx-auto mb-10 leading-relaxed">
+            <DynamicContent
+              sectionId="newsletter-description"
+              fallback="Subscribe to receive exclusive offers, wellness tips, new product launches, and mindful living inspiration."
+            />
+          </p>
+
+          {/* Form */}
+          {!isSubmitted ? (
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-12">
+              <div className="relative flex-1">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-11 h-13 bg-background border-border/60 focus:border-primary text-sm rounded-xl h-[52px]"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn-primary rounded-xl h-[52px] whitespace-nowrap"
+              >
+                Subscribe
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </form>
+          ) : (
+            <div
+              className="flex flex-col items-center gap-3 p-8 rounded-2xl mb-12 max-w-md mx-auto"
+              style={{ background: 'oklch(0.40 0.072 148 / 0.08)', border: '1px solid oklch(0.40 0.072 148 / 0.20)' }}
+            >
+              <Sparkles className="w-8 h-8 text-primary" />
+              <p className="font-serif text-xl text-foreground">Welcome to the family!</p>
+              <p className="text-sm text-muted-foreground">Check your inbox for a special welcome gift.</p>
             </div>
-            
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-foreground mb-3 md:mb-4">
-              <DynamicContent 
-                sectionId="newsletter-title" 
-                fallback="Join ZENistry Community" 
-              />
-            </h2>
-            <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto mb-6 md:mb-8 leading-relaxed">
-              <DynamicContent 
-                sectionId="newsletter-description" 
-                fallback="Subscribe to receive exclusive offers, wellness tips, new product announcements, and mindful living inspiration delivered straight to your inbox." 
-              />
-            </p>
-            
-            {/* Form */}
-            {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto">
-                <div className="relative flex-1">
-                  <Mail className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-4 md:w-5 h-4 md:h-5 text-muted-foreground" />
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 md:pl-12 h-12 md:h-14 bg-card border-border/50 focus:border-accent rounded-lg md:rounded-xl text-sm md:text-base"
-                    required
-                  />
+          )}
+
+          {/* Benefits */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-border/50 pt-10">
+            {benefits.map(({ icon: Icon, title, desc }, i) => (
+              <div
+                key={i}
+                className={`text-center transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+                }`}
+                style={{ transitionDelay: `${200 + i * 80}ms` }}
+              >
+                <div className="flex justify-center mb-2">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'oklch(0.40 0.072 148 / 0.10)' }}>
+                    <Icon className="w-4 h-4 text-primary" />
+                  </div>
                 </div>
-                <Button 
-                  type="submit"
-                  size="lg" 
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 md:h-14 px-6 md:px-8 rounded-lg md:rounded-xl group text-sm md:text-base"
-                >
-                  Subscribe
-                  <ArrowRight className="ml-2 w-4 md:w-5 h-4 md:h-5 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </form>
-            ) : (
-              <div className="bg-accent/10 text-accent p-4 md:p-6 rounded-lg md:rounded-xl max-w-md mx-auto">
-                <Sparkles className="w-6 md:w-8 h-6 md:h-8 mx-auto mb-2 md:mb-3" />
-                <p className="font-medium text-base md:text-lg mb-1 md:mb-3">Welcome to the family!</p>
-                <p className="text-xs md:text-sm opacity-80">Check your inbox for a special welcome gift.</p>
-              </div>
-            )}
-            
-            {/* Benefits */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-8 md:mt-12 pt-8 md:pt-12 border-t border-border/50">
-              <div className="text-center">
-                <p className="font-medium text-foreground text-sm md:text-base">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-1" 
-                    fallback="10% Off" 
-                  />
+                <p className="font-medium text-foreground text-sm">
+                  <DynamicContent sectionId={`newsletter-benefit-${i + 1}`} fallback={title} />
                 </p>
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-1-description" 
-                    fallback="First Order" 
-                  />
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  <DynamicContent sectionId={`newsletter-benefit-${i + 1}-description`} fallback={desc} />
                 </p>
               </div>
-              <div className="text-center">
-                <p className="font-medium text-foreground text-sm md:text-base">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-2" 
-                    fallback="Early Access" 
-                  />
-                </p>
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-2-description" 
-                    fallback="New Products" 
-                  />
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="font-medium text-foreground text-sm md:text-base">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-3" 
-                    fallback="Weekly Tips" 
-                  />
-                </p>
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-3-description" 
-                    fallback="Wellness Advice" 
-                  />
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="font-medium text-foreground text-sm md:text-base">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-4" 
-                    fallback="Exclusive" 
-                  />
-                </p>
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  <DynamicContent 
-                    sectionId="newsletter-benefit-4-description" 
-                    fallback="Member Offers" 
-                  />
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

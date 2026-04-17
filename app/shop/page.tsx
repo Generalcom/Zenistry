@@ -6,20 +6,28 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
-import { Button } from '@/components/ui/button'
+import { Footer } from '@/components/footer-dynamic'
 import { useCart } from '@/hooks/use-cart'
 import { useProducts } from '@/hooks/use-products'
 import { toast } from 'sonner'
-import { Star, ChevronLeft, Heart, SlidersHorizontal } from 'lucide-react'
+import { Star, ChevronLeft, Heart, SlidersHorizontal, Check } from 'lucide-react'
 
-const categoryFilters = ['All', 'Wellness Honey', 'Skincare', 'Body Care', 'Pain Relief', "Men's Grooming", 'Aromatherapy']
+const categoryFilters = [
+  'All',
+  'Wellness Honey',
+  'Skincare',
+  'Body Care',
+  'Pain Relief',
+  "Men's Grooming",
+  'Aromatherapy',
+]
 
 function ShopContent() {
   const { addToCart } = useCart()
   const products = useProducts()
   const searchParams = useSearchParams()
   const [addedItems, setAddedItems] = useState<string[]>([])
+  const [wishlist, setWishlist] = useState<string[]>([])
 
   const urlCategory = searchParams.get('category') ?? 'All'
   const [selectedCategory, setSelectedCategory] = useState(
@@ -37,89 +45,92 @@ function ShopContent() {
       : products.filter((p) => p.category === selectedCategory)
 
   const handleAddToCart = (product: (typeof products)[0]) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-    })
+    addToCart({ id: product.id, name: product.name, price: product.price, image: product.image, quantity: 1 })
     setAddedItems((prev) => [...prev, product.id])
-    toast.success(`Added to cart`)
-    setTimeout(() => {
-      setAddedItems((prev) => prev.filter((id) => id !== product.id))
-    }, 2000)
+    toast.success(`${product.name} added to cart`)
+    setTimeout(() => setAddedItems((prev) => prev.filter((id) => id !== product.id)), 2200)
+  }
+
+  const toggleWishlist = (id: string) => {
+    setWishlist((prev) => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id])
   }
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background pt-20">
-        {/* Breadcrumb */}
-        <div className="border-b border-border/50 bg-card/50">
-          <div className="container mx-auto px-4 lg:px-8 py-4">
+      <main className="min-h-screen bg-background">
+
+        {/* Page hero strip */}
+        <div className="border-b border-border/50 bg-secondary/30">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-10 lg:py-14">
             <Link
               href="/"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit"
+              className="inline-flex items-center gap-1.5 text-[11px] tracking-[0.16em] uppercase font-medium text-muted-foreground hover:text-foreground transition-colors mb-5"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft className="w-3.5 h-3.5" />
               Back to Home
             </Link>
-          </div>
-        </div>
-
-        {/* Page Header */}
-        <div className="border-b border-border/50 py-12">
-          <div className="container mx-auto px-4 lg:px-8 space-y-3">
-            <h1 className="font-serif text-4xl lg:text-5xl text-foreground">Shop All Products</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              Discover our complete collection of natural skincare, wellness honeys, and body care
-              products — handcrafted with love by Angela.
+            <h1
+              className="font-serif text-foreground mb-2"
+              style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', fontWeight: 400 }}
+            >
+              Shop All Products
+            </h1>
+            <p className="text-muted-foreground text-sm max-w-lg leading-relaxed">
+              Discover our complete collection of natural skincare, wellness honeys, and body care — handcrafted with love.
             </p>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-4 gap-8">
-            {/* Sidebar Filters - Desktop only */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-12">
+          <div className="grid lg:grid-cols-4 gap-10">
+
+            {/* Sidebar — desktop */}
             <div className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <SlidersHorizontal className="w-4 h-4 text-muted-foreground" />
-                  <h3 className="font-serif text-lg font-medium text-foreground">Filter</h3>
+              <div className="sticky top-28">
+                <div className="flex items-center gap-2 mb-5">
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
+                  <h3 className="text-[11px] tracking-[0.22em] uppercase font-semibold text-muted-foreground">Filter by</h3>
                 </div>
                 <div className="space-y-1">
                   {categoryFilters.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`block w-full text-left px-4 py-2.5 rounded-lg transition-colors text-sm ${
+                      className={`flex items-center justify-between w-full text-left px-4 py-2.5 rounded-xl transition-all duration-200 text-sm ${
                         selectedCategory === cat
-                          ? 'bg-accent text-accent-foreground font-medium'
-                          : 'hover:bg-secondary text-foreground'
+                          ? 'bg-primary text-primary-foreground font-medium'
+                          : 'text-foreground/70 hover:bg-secondary hover:text-foreground'
                       }`}
                     >
                       {cat}
+                      {selectedCategory === cat && <Check className="w-3.5 h-3.5" />}
                     </button>
                   ))}
+                </div>
+
+                {/* Sidebar brand note */}
+                <div className="mt-8 p-4 rounded-xl bg-secondary/60 border border-border/40">
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    All products are handcrafted with natural ingredients and made with love in South Africa.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Products Grid */}
+            {/* Products grid */}
             <div className="lg:col-span-3">
               {/* Mobile filter pills */}
-              <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 mb-6">
-                <div className="flex gap-2 pb-1">
+              <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 mb-7">
+                <div className="flex gap-2 pb-2">
                   {categoryFilters.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap border ${
+                      className={`flex-shrink-0 px-4 py-2 rounded-full text-[11px] font-medium tracking-wide transition-all whitespace-nowrap border ${
                         selectedCategory === cat
-                          ? 'bg-accent text-accent-foreground border-accent'
-                          : 'bg-card text-foreground border-border hover:bg-secondary'
+                          ? 'bg-primary text-primary-foreground border-primary'
+                          : 'bg-card text-foreground/70 border-border hover:border-primary/40'
                       }`}
                     >
                       {cat}
@@ -128,84 +139,112 @@ function ShopContent() {
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-6">
+              {/* Count */}
+              <p className="text-[11px] tracking-[0.14em] uppercase font-medium text-muted-foreground mb-7">
                 {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
-                {selectedCategory !== 'All' ? ` in ${selectedCategory}` : ''}
+                {selectedCategory !== 'All' && ` · ${selectedCategory}`}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {filteredProducts.map((product) => (
+
+              {/* Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                {filteredProducts.map((product, i) => (
                   <div
                     key={product.id}
-                    className="bg-card rounded-xl border border-border/50 overflow-hidden hover:border-accent/30 transition-all duration-300 hover:shadow-md flex flex-col group"
+                    className="group bg-card rounded-2xl border border-border/40 overflow-hidden card-lift flex flex-col"
+                    style={{ animationDelay: `${i * 60}ms` }}
                   >
                     {/* Image */}
-                    <Link
-                      href={`/shop/${product.id}`}
-                      className="relative aspect-square overflow-hidden bg-secondary/30 block"
-                    >
+                    <Link href={`/shop/${product.id}`} className="relative block overflow-hidden" style={{ aspectRatio: '1' }}>
                       <Image
                         src={product.image}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover transition-transform duration-600 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
+
+                      {/* Badge */}
                       {product.badge && (
-                        <span className="absolute top-4 left-4 px-3 py-1 bg-accent text-accent-foreground text-xs font-medium rounded-full">
+                        <span
+                          className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-medium tracking-[0.16em] uppercase text-primary-foreground"
+                          style={{ background: 'oklch(0.40 0.072 148)', borderRadius: 0 }}
+                        >
                           {product.badge}
                         </span>
                       )}
-                      <button className="absolute top-4 right-4 p-2 bg-card/90 backdrop-blur-sm rounded-full hover:bg-accent hover:text-accent-foreground transition-colors opacity-0 group-hover:opacity-100">
-                        <Heart size={18} />
+
+                      {/* Wishlist */}
+                      <button
+                        onClick={(e) => { e.preventDefault(); toggleWishlist(product.id) }}
+                        className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: 'rgba(255,255,255,0.90)',
+                          backdropFilter: 'blur(8px)',
+                          color: wishlist.includes(product.id) ? 'oklch(0.40 0.072 148)' : 'rgba(0,0,0,0.4)',
+                        }}
+                        aria-label="Wishlist"
+                      >
+                        <Heart className={`w-4 h-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
                       </button>
                     </Link>
 
                     {/* Content */}
                     <div className="p-5 flex flex-col flex-grow">
-                      <p className="text-xs uppercase tracking-wider text-accent font-medium mb-2">
+                      <p className="text-[10px] tracking-[0.20em] uppercase font-medium text-primary/70 mb-1.5">
                         {product.category}
                       </p>
                       <Link href={`/shop/${product.id}`}>
-                        <h3 className="font-serif text-lg font-medium text-foreground line-clamp-2 mb-2 hover:text-primary transition-colors">
+                        <h3
+                          className="font-serif text-foreground hover:text-primary transition-colors mb-2 line-clamp-2"
+                          style={{ fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.3 }}
+                        >
                           {product.name}
                         </h3>
                       </Link>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-grow">
+                      <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow leading-relaxed">
                         {product.description}
                       </p>
 
-                      <div className="flex items-center gap-2 mb-4">
-                        <Star className="w-4 h-4 fill-accent text-accent" />
-                        <span className="text-sm font-medium">{product.rating}</span>
-                        <span className="text-sm text-muted-foreground">({product.reviews})</span>
+                      {/* Rating */}
+                      <div className="flex items-center gap-1.5 mb-4">
+                        <div className="flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3 h-3 ${i < Math.floor(product.rating ?? 5) ? 'fill-primary text-primary' : 'fill-border text-border'}`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[11px] text-muted-foreground">({product.reviews ?? 0})</span>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xl font-semibold text-foreground">
-                            R {product.price}
-                          </span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-muted-foreground line-through">
-                              R {product.originalPrice}
-                            </span>
-                          )}
-                        </div>
-                        <Button
-                          size="sm"
+                      {/* Price + CTA */}
+                      <div className="border-t border-border/40 pt-4 flex items-center justify-between gap-3">
+                        <span className="font-serif text-lg text-foreground">
+                          R{typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
+                        </span>
+                        <button
                           onClick={() => handleAddToCart(product)}
-                          className={`rounded-full transition-all ${
+                          className={`flex-1 text-[10px] font-medium tracking-[0.16em] uppercase py-2.5 rounded-lg transition-all duration-300 ${
                             addedItems.includes(product.id)
-                              ? 'bg-green-600 hover:bg-green-700 text-white'
-                              : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                              ? 'bg-green-600 text-white'
+                              : 'bg-primary text-primary-foreground hover:bg-primary/85'
                           }`}
                         >
-                          {addedItems.includes(product.id) ? '✓' : 'Add'}
-                        </Button>
+                          {addedItems.includes(product.id) ? '✓ Added' : 'Add to Cart'}
+                        </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {filteredProducts.length === 0 && (
+                <div className="text-center py-20">
+                  <p className="font-serif text-2xl text-foreground/50 mb-3">No products found</p>
+                  <p className="text-sm text-muted-foreground">Try selecting a different category.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -217,7 +256,11 @@ function ShopContent() {
 
 export default function ShopPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+      </div>
+    }>
       <ShopContent />
     </Suspense>
   )

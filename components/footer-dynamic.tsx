@@ -2,8 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, ArrowUpRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Instagram, Facebook, Youtube, Mail, Phone, MapPin } from "lucide-react"
 import { DynamicContent } from "./dynamic-content"
 
 const footerLinks = {
@@ -26,10 +25,6 @@ const footerLinks = {
     { label: "WhatsApp Us", href: "https://wa.me/27828277990" },
     { label: "Returns", href: "/#contact" },
   ],
-  legal: [
-    { label: "Privacy Policy", href: "/#contact" },
-    { label: "Terms of Service", href: "/#contact" },
-  ]
 }
 
 const socialLinks = [
@@ -40,138 +35,164 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="bg-primary text-primary-foreground pt-12 md:pt-16 lg:pt-20 pb-6 md:pb-8">
-      <div className="container mx-auto px-4 lg:px-8">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 md:gap-8 lg:gap-12 pb-8 md:pb-12 lg:pb-16 border-b border-primary-foreground/10">
-          {/* Brand Column */}
-          <div className="col-span-1 sm:col-span-2 lg:col-span-2">
-            {/* Logo */}
-            <Link href="/" className="inline-block mb-4 md:mb-6">
+    <footer className="relative overflow-hidden" style={{ background: 'oklch(0.16 0.028 140)' }}>
+      {/* Subtle texture overlay */}
+      <div className="absolute inset-0 texture-bg opacity-40 pointer-events-none" />
+
+      {/* Top accent line */}
+      <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, oklch(0.60 0.090 148 / 0.40), transparent)' }} />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
+        {/* Main grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 py-16 lg:py-20 border-b"
+          style={{ borderColor: 'oklch(0.99 0 0 / 0.06)' }}>
+
+          {/* Brand — 4 cols */}
+          <div className="sm:col-span-2 lg:col-span-4">
+            <Link href="/" className="inline-block mb-6">
               <Image
                 src="/logo.png"
                 alt="ZENistry"
                 width={110}
                 height={55}
-                className="h-14 w-auto invert mix-blend-screen"
+                className="h-14 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-xs md:text-sm text-primary-foreground/70 leading-relaxed mb-4 md:mb-6 max-w-sm">
-              <DynamicContent 
-                sectionId="footer-description" 
-                fallback="Nourishing your skin and soul with nature's finest ingredients. Handcrafted wellness products for mindful living." 
+            <p className="text-sm leading-relaxed mb-8 max-w-xs" style={{ color: 'oklch(0.99 0 0 / 0.50)' }}>
+              <DynamicContent
+                sectionId="footer-description"
+                fallback="Nourishing your skin and soul with nature's finest ingredients. Handcrafted wellness products for mindful living."
               />
             </p>
-            
-            {/* Contact Info */}
-            <div className="space-y-2 md:space-y-3">
-              <a href="tel:<DynamicContent sectionId='footer-phone' fallback='0828277990' />" className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                <Phone className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />
-                <span><DynamicContent sectionId='footer-phone' fallback='082 827 7990' /></span>
+
+            <div className="space-y-3 mb-8">
+              <a href="tel:+27828277990" className="flex items-center gap-3 text-sm transition-colors group" style={{ color: 'oklch(0.99 0 0 / 0.45)' }}>
+                <Phone className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-white transition-colors" style={{ color: 'oklch(0.70 0.09 148)' }} />
+                <span className="group-hover:text-white transition-colors">
+                  <DynamicContent sectionId='footer-phone' fallback='082 827 7990' />
+                </span>
               </a>
-              <a href="mailto:<DynamicContent sectionId='footer-email' fallback='hello@ZENistry.co.za' />" className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                <Mail className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />
-                <span><DynamicContent sectionId='footer-email' fallback='hello@ZENistry.co.za' /></span>
+              <a href="mailto:hello@zenistry.co.za" className="flex items-center gap-3 text-sm transition-colors group" style={{ color: 'oklch(0.99 0 0 / 0.45)' }}>
+                <Mail className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-white transition-colors" style={{ color: 'oklch(0.70 0.09 148)' }} />
+                <span className="group-hover:text-white transition-colors">
+                  <DynamicContent sectionId='footer-email' fallback='hello@zenistry.co.za' />
+                </span>
               </a>
-              <p className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-primary-foreground/70">
-                <MapPin className="w-3 md:w-4 h-3 md:h-4 flex-shrink-0" />
-                <span><DynamicContent sectionId='footer-location' fallback='South Africa' /></span>
+              <p className="flex items-center gap-3 text-sm" style={{ color: 'oklch(0.99 0 0 / 0.45)' }}>
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'oklch(0.70 0.09 148)' }} />
+                <DynamicContent sectionId='footer-location' fallback='South Africa' />
               </p>
             </div>
-          </div>
 
-          {/* Shop Links */}
-          <div className="col-span-1">
-            <h4 className="font-medium text-xs md:text-sm uppercase tracking-wider mb-3 md:mb-6">Shop</h4>
-            <ul className="space-y-2 md:space-y-3">
-              {footerLinks.shop.map((link) => (
-                <li key={link.label}>
-                  <Link 
-                    href={link.href}
-                    className="text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div className="col-span-1">
-            <h4 className="font-medium text-xs md:text-sm uppercase tracking-wider mb-3 md:mb-6">Company</h4>
-            <ul className="space-y-2 md:space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <Link 
-                    href={link.href}
-                    className="text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support Links */}
-          <div className="col-span-1">
-            <h4 className="font-medium text-xs md:text-sm uppercase tracking-wider mb-3 md:mb-6">Support</h4>
-            <ul className="space-y-2 md:space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.label}>
-                  <Link 
-                    href={link.href}
-                    className="text-xs md:text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Social & App */}
-          <div className="col-span-1">
-            <h4 className="font-medium text-xs md:text-sm uppercase tracking-wider mb-3 md:mb-6">Connect</h4>
-            <div className="flex items-center gap-2 mb-4 md:mb-6">
+            {/* Social */}
+            <div className="flex items-center gap-2">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-8 md:w-10 h-8 md:h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                  style={{ background: 'oklch(0.99 0 0 / 0.08)', color: 'oklch(0.99 0 0 / 0.55)' }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'oklch(0.40 0.072 148)'
+                    ;(e.currentTarget as HTMLElement).style.color = '#fff'
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.background = 'oklch(0.99 0 0 / 0.08)'
+                    ;(e.currentTarget as HTMLElement).style.color = 'oklch(0.99 0 0 / 0.55)'
+                  }}
                 >
-                  <social.icon className="w-4 md:w-5 h-4 md:h-5" />
+                  <social.icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
-            
-            {/* Shop Now CTA */}
-            <Button 
-              asChild
-              variant="outline" 
-              className="w-full border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 group text-xs md:text-sm"
+          </div>
+
+          {/* Spacer on large screens */}
+          <div className="hidden lg:block lg:col-span-1" />
+
+          {/* Shop */}
+          <div className="lg:col-span-2">
+            <h4 className="text-[10px] tracking-[0.28em] uppercase font-semibold mb-5" style={{ color: 'oklch(0.99 0 0 / 0.35)' }}>Shop</h4>
+            <ul className="space-y-3">
+              {footerLinks.shop.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors duration-200 hover:text-white"
+                    style={{ color: 'oklch(0.99 0 0 / 0.50)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="lg:col-span-2">
+            <h4 className="text-[10px] tracking-[0.28em] uppercase font-semibold mb-5" style={{ color: 'oklch(0.99 0 0 / 0.35)' }}>Company</h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors duration-200 hover:text-white"
+                    style={{ color: 'oklch(0.99 0 0 / 0.50)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div className="lg:col-span-3">
+            <h4 className="text-[10px] tracking-[0.28em] uppercase font-semibold mb-5" style={{ color: 'oklch(0.99 0 0 / 0.35)' }}>Support</h4>
+            <ul className="space-y-3">
+              {footerLinks.support.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm transition-colors duration-200 hover:text-white"
+                    style={{ color: 'oklch(0.99 0 0 / 0.50)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Shop CTA */}
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 mt-7 text-[11px] font-medium tracking-[0.18em] uppercase px-5 py-3 rounded-lg transition-all duration-200"
+              style={{
+                background: 'oklch(0.40 0.072 148)',
+                color: '#fff',
+              }}
             >
-              <Link href="/shop">
-                Shop Now
-                <ArrowUpRight className="ml-2 w-3 md:w-4 h-3 md:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            </Button>
+              Shop Now
+            </Link>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 md:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
-          <p className="text-xs md:text-sm text-primary-foreground/50 text-center md:text-left">
+        {/* Bottom bar */}
+        <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-xs text-center sm:text-left" style={{ color: 'oklch(0.99 0 0 / 0.30)' }}>
             <DynamicContent sectionId="footer-copyright" fallback="© 2026 ZENistry. All rights reserved. Made with love in South Africa." />
           </p>
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 md:gap-6">
-            {footerLinks.legal.map((link) => (
-              <Link 
+          <div className="flex items-center gap-6">
+            {[
+              { label: 'Privacy Policy', href: '/#contact' },
+              { label: 'Terms', href: '/#contact' },
+            ].map((link) => (
+              <Link
                 key={link.label}
                 href={link.href}
-                className="text-xs md:text-sm text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                className="text-xs transition-colors hover:text-white"
+                style={{ color: 'oklch(0.99 0 0 / 0.30)' }}
               >
                 {link.label}
               </Link>

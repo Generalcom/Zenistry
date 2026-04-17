@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Cormorant_Garamond, Inter } from 'next/font/google'
+import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from 'sonner'
 import { CartProvider } from '@/hooks/use-cart'
@@ -7,26 +7,28 @@ import { ReviewProvider } from '@/lib/review-context'
 import { WhatsAppButton } from '@/components/whatsapp-button'
 import './globals.css'
 
-const cormorant = Cormorant_Garamond({ 
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-serif"
-});
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-serif',
+  display: 'swap',
+})
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-sans"
-});
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'ZENistry | Beauty & Lifestyle - Skincare, Wellness & Podcast',
-  description: 'Discover natural skincare and wellness products crafted with love. Infused honeys, serums, body care, and mental wellness podcast for holistic living.',
-  keywords: ['skincare', 'wellness', 'natural products', 'honey', 'podcast', 'mental health', 'body care'],
-  generator: 'v0.app',
+  title: 'ZENistry | Holistic Skincare & Wellness — South Africa',
+  description: 'Discover natural skincare and wellness products crafted with love. Infused honeys, serums, body care, and holistic wellness — handmade in South Africa.',
+  keywords: ['skincare', 'wellness', 'natural products', 'honey', 'holistic', 'body care', 'South Africa'],
 }
 
 export const viewport: Viewport = {
-  themeColor: '#F5F0E8',
+  themeColor: '#F5F2EB',
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
@@ -38,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="font-sans antialiased">
         <CartProvider>
           <ReviewProvider>

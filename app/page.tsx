@@ -1,5 +1,6 @@
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero-dynamic"
+import { PhilosophyBar } from "@/components/philosophy-bar"
 import { FeaturedProducts } from "@/components/featured-products"
 import { Categories } from "@/components/categories"
 import { About } from "@/components/about-dynamic"
@@ -14,6 +15,7 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
+      <PhilosophyBar />
       <FeaturedProducts />
       <Categories />
       <About />
