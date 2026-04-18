@@ -146,11 +146,11 @@ function ShopContent() {
               </p>
 
               {/* Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
                 {filteredProducts.map((product, i) => (
                   <div
                     key={product.id}
-                    className="group bg-card rounded-2xl border border-border/40 overflow-hidden card-lift flex flex-col min-w-0"
+                    className="group bg-card rounded-xl sm:rounded-2xl border border-border/40 overflow-hidden card-lift flex flex-col min-w-0"
                     style={{ animationDelay: `${i * 60}ms` }}
                   >
                     {/* Image */}
@@ -161,7 +161,7 @@ function ShopContent() {
                           alt={product.name}
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                         />
 
                         {/* Badge */}
@@ -191,24 +191,24 @@ function ShopContent() {
                     </Link>
 
                     {/* Content */}
-                    <div className="p-5 flex flex-col flex-grow">
-                      <p className="text-[10px] tracking-[0.20em] uppercase font-medium text-primary/70 mb-1.5">
+                    <div className="p-3 sm:p-5 flex flex-col flex-grow">
+                      <p className="text-[9px] sm:text-[10px] tracking-[0.18em] uppercase font-medium text-primary/70 mb-1">
                         {product.category}
                       </p>
                       <Link href={`/shop/${product.id}`}>
                         <h3
-                          className="font-serif text-foreground hover:text-primary transition-colors mb-2 line-clamp-2"
-                          style={{ fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.3 }}
+                          className="font-serif text-foreground hover:text-primary transition-colors mb-1.5 line-clamp-2"
+                          style={{ fontSize: 'clamp(0.78rem, 2.5vw, 1.05rem)', fontWeight: 400, lineHeight: 1.3 }}
                         >
                           {product.name}
                         </h3>
                       </Link>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow leading-relaxed">
+                      <p className="hidden sm:block text-xs text-muted-foreground line-clamp-2 mb-4 flex-grow leading-relaxed">
                         {product.description}
                       </p>
 
-                      {/* Rating */}
-                      <div className="flex items-center gap-1.5 mb-4">
+                      {/* Rating — hidden on mobile to save space */}
+                      <div className="hidden sm:flex items-center gap-1.5 mb-4">
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
@@ -221,13 +221,13 @@ function ShopContent() {
                       </div>
 
                       {/* Price + CTA */}
-                      <div className="border-t border-border/40 pt-4 flex items-center justify-between gap-3">
-                        <span className="font-serif text-lg text-foreground">
+                      <div className="border-t border-border/40 pt-2.5 sm:pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                        <span className="font-serif text-sm sm:text-lg text-foreground">
                           R{typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
                         </span>
                         <button
                           onClick={() => handleAddToCart(product)}
-                          className={`flex-1 text-[10px] font-medium tracking-[0.16em] uppercase py-2.5 rounded-lg transition-all duration-300 ${
+                          className={`w-full sm:flex-1 text-[9px] sm:text-[10px] font-medium tracking-[0.14em] uppercase py-2 sm:py-2.5 rounded-lg transition-all duration-300 ${
                             addedItems.includes(product.id)
                               ? 'bg-green-600 text-white'
                               : 'bg-primary text-primary-foreground hover:bg-primary/85'
