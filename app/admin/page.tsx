@@ -531,7 +531,7 @@ function OrdersPanel() {
     const all = getAllOrders()
     if (all[trackingNumber]) {
       all[trackingNumber].status = status
-      localStorage.setItem('zenestry-orders', JSON.stringify(all))
+      localStorage.setItem('ZENistry-orders', JSON.stringify(all))
       setOrders(Object.values(all).sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
       toast.success('Order status updated')
     }

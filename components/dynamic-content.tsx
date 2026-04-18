@@ -1,66 +1,51 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAllContentSections } from '@/lib/content-manager'
+import { getContent } from '@/lib/content-manager'
 
 interface DynamicContentProps {
   sectionId: string
   fallback?: string
   className?: string
-  as?: 'h1' | 'h2' | 'h3' | 'p' | 'span'
-  children?: React.ReactNode
+  as?: keyof JSX.IntrinsicElements
 }
 
-export function DynamicContent({ sectionId, fallback, className, as: Component = 'p', children }: DynamicContentProps) {
-  const [content, setContent] = useState(fallback || '')
+export function DynamicContent({ sectionId, fallback, className, as: Tag = 'span' }: DynamicContentProps) {
+  const [content, setContent] = useState(() => getContent(sectionId, fallback))
 
   useEffect(() => {
-    const loadContent = async () => {
-      try {
-        const sections = await getAllContentSections()
-        const section = sections.find(s => s.metadata?.category === sectionId)
-        setContent(section?.content || fallback || '')
-      } catch (error) {
-        console.error(`Error loading content for ${sectionId}:`, error)
-        setContent(fallback || '')
-      }
+    const refresh = () => setContent(getContent(sectionId, fallback))
+    refresh()
+    window.addEventListener('ZENistry-content-updated', refresh)
+    window.addEventListener('storage', refresh)
+    return () => {
+      window.removeEventListener('ZENistry-content-updated', refresh)
+      window.removeEventListener('storage', refresh)
     }
-    loadContent()
   }, [sectionId, fallback])
 
-  const ComponentTag = Component
-
-  const contentWithChildren = children ? content : content
-
-  return (
-    <ComponentTag className={className} dangerouslySetInnerHTML={{ __html: contentWithChildren }} />
-  )
+  return <Tag className={className}>{content}</Tag>
 }
 
-export function DynamicImage({ sectionId, fallback, className, alt }: { sectionId: string; fallback?: string; className?: string; alt?: string }) {
-  const [src, setSrc] = useState(fallback || '')
+export function DynamicImage({ sectionId, fallback, className, alt }: {
+  sectionId: string
+  fallback?: string
+  className?: string
+  alt?: string
+}) {
+  const [src, setSrc] = useState(() => getContent(sectionId, fallback))
 
   useEffect(() => {
-    const loadImage = async () => {
-      try {
-        const sections = await getAllContentSections()
-        const section = sections.find(s => s.metadata?.category === sectionId)
-        setSrc(section?.content || fallback || '')
-      } catch (error) {
-        console.error(`Error loading image for ${sectionId}:`, error)
-        setSrc(fallback || '')
-      }
+    const refresh = () => setSrc(getContent(sectionId, fallback))
+    refresh()
+    window.addEventListener('ZENistry-content-updated', refresh)
+    window.addEventListener('storage', refresh)
+    return () => {
+      window.removeEventListener('ZENistry-content-updated', refresh)
+      window.removeEventListener('storage', refresh)
     }
-    loadImage()
   }, [sectionId, fallback])
 
   if (!src) return null
-
-  return (
-    <img
-      src={src}
-      alt={alt || ''}
-      className={className}
-    />
-  )
+  return <img src={src} alt={alt || ''} className={className} />
 }
