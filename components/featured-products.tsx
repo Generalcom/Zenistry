@@ -135,48 +135,33 @@ export function FeaturedProducts() {
                       sizes="(max-width: 768px) 72vw, 33vw"
                     />
 
-                    {/* Overlay on hover */}
-                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/8 transition-all duration-500" />
-
                     {/* Badge */}
                     {product.badge && (
                       <span
-                        className="absolute top-3.5 left-3.5 px-3 py-1 text-[9px] font-medium tracking-[0.18em] uppercase"
-                        style={{ backgroundColor: 'oklch(0.40 0.072 148)', color: '#fff', borderRadius: 0 }}
+                        className="absolute top-3 left-3 px-3 py-1 text-[9px] font-medium tracking-[0.14em] uppercase"
+                        style={{ backgroundColor: 'rgba(94,107,82,0.88)', color: '#fff' }}
                       >
                         {product.badge}
                       </span>
                     )}
-
-                    {/* Quick shop label */}
-                    <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-400 bg-foreground/90 backdrop-blur-sm py-3 text-center">
-                      <span className="text-primary-foreground text-[10px] tracking-[0.22em] uppercase font-medium">
-                        Quick View
-                      </span>
-                    </div>
                   </Link>
 
                   {/* Card content */}
-                  <div className="p-5 pb-6">
+                  <div className="p-5 text-center space-y-3">
                     <Link href={`/shop/${product.id}`}>
                       <h3
-                        className="font-serif text-foreground group-hover:text-primary transition-colors duration-200 mb-1 text-center"
-                        style={{ fontSize: '1.05rem', fontWeight: 400, lineHeight: 1.35 }}
+                        className="font-serif text-foreground group-hover:text-primary transition-colors"
+                        style={{ fontSize: '1.05rem', fontWeight: 400 }}
                       >
                         {product.name}
                       </h3>
                     </Link>
-                    {product.price != null && (
-                      <p className="text-center text-sm font-medium text-muted-foreground mb-4">
-                        R{Number(product.price).toFixed(2)}
-                      </p>
-                    )}
                     <Link
                       href={`/shop/${product.id}`}
-                      className="btn-primary w-full justify-center text-[10px]"
-                      style={{ borderRadius: '8px', padding: '0.65rem 1rem' }}
+                      className="inline-block px-8 py-2.5 text-xs font-medium tracking-widest uppercase transition-all duration-300 hover:opacity-85"
+                      style={{ backgroundColor: '#5e6b52', color: '#fff', letterSpacing: '0.16em' }}
                     >
-                      Add to Cart
+                      Shop Now
                     </Link>
                   </div>
                 </div>

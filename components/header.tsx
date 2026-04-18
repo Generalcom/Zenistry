@@ -39,13 +39,6 @@ export function Header() {
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="bg-primary text-primary-foreground text-center py-2.5 px-4 relative z-50">
-        <p className="text-[11px] font-sans tracking-[0.20em] uppercase font-medium">
-          Free Delivery on Orders Over R500 &nbsp;·&nbsp; SA Wide Shipping
-        </p>
-      </div>
-
       <header
         className={`sticky top-0 left-0 right-0 z-40 transition-all duration-500 ${
           isScrolled
