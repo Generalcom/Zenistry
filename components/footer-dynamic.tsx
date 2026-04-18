@@ -72,12 +72,6 @@ export function Footer() {
                   <DynamicContent sectionId='footer-phone' fallback='082 827 7990' />
                 </span>
               </a>
-              <a href="mailto:hello@zenistry.co.za" className="flex items-center gap-3 text-sm transition-colors group" style={{ color: 'oklch(0.99 0 0 / 0.45)' }}>
-                <Mail className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-white transition-colors" style={{ color: 'oklch(0.70 0.09 148)' }} />
-                <span className="group-hover:text-white transition-colors">
-                  <DynamicContent sectionId='footer-email' fallback='hello@zenistry.co.za' />
-                </span>
-              </a>
               <p className="flex items-center gap-3 text-sm" style={{ color: 'oklch(0.99 0 0 / 0.45)' }}>
                 <MapPin className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'oklch(0.70 0.09 148)' }} />
                 <DynamicContent sectionId='footer-location' fallback='South Africa' />

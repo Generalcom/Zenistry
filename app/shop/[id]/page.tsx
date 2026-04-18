@@ -12,7 +12,6 @@ import { useCart } from '@/hooks/use-cart'
 import { useProduct, useProducts } from '@/hooks/use-products'
 import { toast } from 'sonner'
 import {
-  Star,
   ChevronLeft,
   ShoppingBag,
   CheckCircle2,
@@ -89,16 +88,11 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
             {/* Details */}
             <div className="space-y-6 lg:sticky lg:top-24">
-              {/* Category & Rating */}
+              {/* Category */}
               <div className="flex items-center justify-between">
                 <span className="text-xs uppercase tracking-widest text-accent font-medium">
                   {product.category}
                 </span>
-                <div className="flex items-center gap-1.5">
-                  <Star className="w-4 h-4 fill-accent text-accent" />
-                  <span className="text-sm font-medium">{product.rating}</span>
-                  <span className="text-sm text-muted-foreground">({product.reviews} reviews)</span>
-                </div>
               </div>
 
               {/* Name */}
@@ -106,22 +100,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                 {product.name}
               </h1>
 
-              {/* Price */}
-              <div className="flex items-center gap-3">
-                <span className="font-serif text-3xl font-semibold text-foreground">
-                  R {product.price}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-lg text-muted-foreground line-through">
-                    R {product.originalPrice}
-                  </span>
-                )}
-                {product.originalPrice && (
-                  <span className="px-2 py-0.5 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                    Save R {product.originalPrice - product.price}
-                  </span>
-                )}
-              </div>
 
               {/* Description */}
               <p className="text-muted-foreground leading-relaxed">{product.longDescription}</p>
@@ -180,7 +158,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   ) : (
                     <>
                       <ShoppingBag className="mr-2 w-5 h-5" />
-                      Add to Cart — R {product.price * quantity}
+                      Add to Cart
                     </>
                   )}
                 </Button>
@@ -235,7 +213,6 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                       <h3 className="font-serif text-base font-medium text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors">
                         {related.name}
                       </h3>
-                      <span className="font-semibold text-foreground">R {related.price}</span>
                     </div>
                   </Link>
                 ))}

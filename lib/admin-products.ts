@@ -22,16 +22,22 @@ export function getOverrides(): Record<string, ProductOverride> {
   }
 }
 
+function notifyUpdate() {
+  window.dispatchEvent(new CustomEvent('ZENistry-products-updated'))
+}
+
 export function setOverride(id: string, override: Partial<ProductOverride>): void {
   const all = getOverrides()
   all[id] = { ...(all[id] ?? {}), ...override }
   localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all))
+  notifyUpdate()
 }
 
 export function resetOverride(id: string): void {
   const all = getOverrides()
   delete all[id]
   localStorage.setItem(OVERRIDES_KEY, JSON.stringify(all))
+  notifyUpdate()
 }
 
 export function getProductsWithOverrides(): Product[] {

@@ -8,7 +8,16 @@ export function useProducts(): Product[] {
   const [products, setProducts] = useState<Product[]>(defaultProducts)
 
   useEffect(() => {
-    setProducts(getProductsWithOverrides())
+    const refresh = () => setProducts(getProductsWithOverrides())
+    refresh()
+    // same-tab updates (admin saves on same page)
+    window.addEventListener('ZENistry-products-updated', refresh)
+    // cross-tab updates (admin in one tab, shop in another)
+    window.addEventListener('storage', refresh)
+    return () => {
+      window.removeEventListener('ZENistry-products-updated', refresh)
+      window.removeEventListener('storage', refresh)
+    }
   }, [])
 
   return products

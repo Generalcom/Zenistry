@@ -207,24 +207,9 @@ function ShopContent() {
                         {product.description}
                       </p>
 
-                      {/* Rating — hidden on mobile to save space */}
-                      <div className="hidden sm:flex items-center gap-1.5 mb-4">
-                        <div className="flex gap-0.5">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-3 h-3 ${i < Math.floor(product.rating ?? 5) ? 'fill-primary text-primary' : 'fill-border text-border'}`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-[11px] text-muted-foreground">({product.reviews ?? 0})</span>
-                      </div>
 
-                      {/* Price + CTA */}
+                      {/* CTA */}
                       <div className="border-t border-border/40 pt-2.5 sm:pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                        <span className="font-serif text-sm sm:text-lg text-foreground">
-                          R{typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
-                        </span>
                         <button
                           onClick={() => handleAddToCart(product)}
                           className={`w-full sm:flex-1 text-[9px] sm:text-[10px] font-medium tracking-[0.14em] uppercase py-2 sm:py-2.5 rounded-lg transition-all duration-300 ${
