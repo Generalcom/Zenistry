@@ -58,7 +58,7 @@ function ShopContent() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-background overflow-x-hidden">
 
         {/* Page hero strip */}
         <div className="border-b border-border/50 bg-secondary/30">
@@ -82,8 +82,8 @@ function ShopContent() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-12">
-          <div className="grid lg:grid-cols-4 gap-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
+          <div className="grid lg:grid-cols-4 gap-6 lg:gap-10">
 
             {/* Sidebar — desktop */}
             <div className="hidden lg:block lg:col-span-1">
@@ -121,7 +121,7 @@ function ShopContent() {
             {/* Products grid */}
             <div className="lg:col-span-3">
               {/* Mobile filter pills */}
-              <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 mb-7">
+              <div className="lg:hidden overflow-x-auto scrollbar-hide mb-6">
                 <div className="flex gap-2 pb-2">
                   {categoryFilters.map((cat) => (
                     <button
