@@ -31,7 +31,6 @@ const footerLinks = {
     { label: "Track My Order", href: "/track" },
     { label: "Contact", href: "/#contact" },
     { label: "WhatsApp Us", href: "https://wa.me/27828277990" },
-    { label: "Returns", href: "/#contact" },
   ],
 }
 
