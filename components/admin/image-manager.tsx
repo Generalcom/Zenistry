@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import {
   uploadImage, getUploadedImages, deleteImage, assignImageToProduct,
-  getProductImages, unassignedImages, UploadedImage,
+  getProductImages, getUnassignedImages, UploadedImage,
 } from '@/lib/image-upload'
 
 interface ImageManagerProps {
@@ -33,13 +33,13 @@ export function ImageManager({ productId, onSelectImage, showUnassigned = false 
     if (productId && !showUnassigned) {
       setImages(getProductImages(productId))
     } else if (showUnassigned) {
-      setImages(unassignedImages())
+      setImages(getUnassignedImages())
     } else {
       setImages(Object.values(getUploadedImages()))
     }
   }
 
-  useState(() => {
+  useEffect(() => {
     loadImages()
   }, [productId, showUnassigned])
 

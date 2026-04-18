@@ -21,10 +21,11 @@ import {
   LogOut, Save, RotateCcw, Eye, EyeOff, Download, Upload,
   Package, ShoppingBag, ArrowUpRight, ImageIcon, ChevronDown,
   ChevronUp, Truck, CheckCircle2, TrendingUp, BarChart2, Clock,
-  Banknote, ArrowRight, Shield, FileText,
+  Banknote, ArrowRight, Shield, FileText, Mail,
 } from 'lucide-react'
 import { PasswordChange } from '@/components/admin/password-change'
 import { ContentDashboard } from '@/components/admin/content-dashboard'
+import { ContactManagement } from '@/components/admin/contact-management'
 import { getCurrentPassword, initializePassword } from '@/lib/password-manager'
 
 const SESSION_KEY = 'ZENistry-admin-auth'
@@ -552,28 +553,61 @@ function OrdersPanel() {
       {orders.map((order) => {
         const currentIdx = ORDER_STATUSES.findIndex((s) => s.key === order.status)
         const isPaid = PAID_STATUSES.includes(order.status)
+        const currentStatus = ORDER_STATUSES.find(s => s.key === order.status)
+        const waText = `Hi ${order.customer.firstName}! Your ZENistry order *${order.trackingNumber}* has been updated to: *${currentStatus?.label}*. Track it here: ${typeof window !== 'undefined' ? window.location.origin : ''}/track?number=${order.trackingNumber}`
         return (
           <div key={order.trackingNumber} className={`bg-card rounded-xl border p-5 space-y-4 ${isPaid ? 'border-emerald-200 dark:border-emerald-900/50' : 'border-border/50'}`}>
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-mono font-bold text-accent">{order.trackingNumber}</p>
                   {isPaid && (
                     <span className="text-xs bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-medium">Paid</span>
                   )}
+                  <a
+                    href={`/track?number=${order.trackingNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-muted-foreground hover:text-accent underline underline-offset-2"
+                  >
+                    View tracking page
+                  </a>
                 </div>
                 <p className="text-sm text-foreground mt-0.5">
                   {order.customer.firstName} {order.customer.lastName} — {order.customer.phone}
                 </p>
                 <p className="text-xs text-muted-foreground">{order.customer.city} · {formatDate(order.createdAt)}</p>
               </div>
-              <div className="text-right">
-                <p className="font-serif text-lg font-semibold text-foreground">R{order.total.toFixed(2)}</p>
-                <p className="text-xs text-muted-foreground">{order.items.length} item{order.items.length !== 1 ? 's' : ''}</p>
+              <div className="text-right flex flex-col items-end gap-2">
+                <div>
+                  <p className="font-serif text-lg font-semibold text-foreground">R{order.total.toFixed(2)}</p>
+                  <p className="text-xs text-muted-foreground">{order.items.length} item{order.items.length !== 1 ? 's' : ''}</p>
+                </div>
+                <a
+                  href={`https://wa.me/${order.customer.phone.replace(/\D/g, '')}?text=${encodeURIComponent(waText)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 px-3 py-1.5 rounded-full font-medium transition-colors"
+                >
+                  <ArrowRight className="w-3 h-3" />
+                  Notify on WhatsApp
+                </a>
               </div>
             </div>
+
+            {/* Items */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {order.items.map(item => (
+                <div key={item.id} className="flex items-center gap-2 bg-secondary/30 rounded-lg px-3 py-2">
+                  <span className="text-xs text-muted-foreground bg-secondary rounded px-1.5 py-0.5 font-mono">×{item.quantity}</span>
+                  <span className="text-xs text-foreground truncate flex-1">{item.name}</span>
+                  <span className="text-xs font-medium text-foreground">R{(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+            </div>
+
             <div className="space-y-2">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</p>
+              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Update Status — customer sees this on their tracking page</p>
               <div className="flex flex-wrap gap-2">
                 {ORDER_STATUSES.map((s, idx) => (
                   <button
@@ -604,8 +638,9 @@ function OrdersPanel() {
 // ── Main Admin ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
-  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders' | 'content' | 'settings'>('sales')
+  const [activeTab, setActiveTab] = useState<'sales' | 'products' | 'orders' | 'messages' | 'content' | 'settings'>('sales')
   const [overrides, setOverrides] = useState<Record<string, ProductOverride>>({})
+  const [unreadMessages, setUnreadMessages] = useState(0)
   const importRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -613,7 +648,14 @@ export default function AdminPage() {
   }, [])
 
   useEffect(() => {
-    if (authed) setOverrides(getOverrides())
+    if (authed) {
+      setOverrides(getOverrides())
+      fetch('/api/contact').then(r => r.json()).then(data => {
+        if (data.success) {
+          setUnreadMessages(data.submissions.filter((s: { status: string }) => s.status === 'new').length)
+        }
+      }).catch(() => {})
+    }
   }, [authed])
 
   const handleSave = (id: string, data: ProductOverride) => {
@@ -667,11 +709,12 @@ export default function AdminPage() {
   const editedCount = Object.keys(overrides).length
 
   const TABS = [
-    { key: 'sales' as const, label: 'Sales', icon: BarChart2 },
-    { key: 'products' as const, label: 'Products', icon: Package },
-    { key: 'orders' as const, label: 'Orders', icon: Truck },
-    { key: 'content' as const, label: 'Content', icon: FileText },
-    { key: 'settings' as const, label: 'Settings', icon: Shield },
+    { key: 'sales' as const, label: 'Sales', icon: BarChart2, badge: 0 },
+    { key: 'products' as const, label: 'Products', icon: Package, badge: 0 },
+    { key: 'orders' as const, label: 'Orders', icon: Truck, badge: 0 },
+    { key: 'messages' as const, label: 'Messages', icon: Mail, badge: unreadMessages },
+    { key: 'content' as const, label: 'Content', icon: FileText, badge: 0 },
+    { key: 'settings' as const, label: 'Settings', icon: Shield, badge: 0 },
   ]
 
   return (
@@ -703,12 +746,12 @@ export default function AdminPage() {
       <div className="container mx-auto px-4 lg:px-8 py-8 max-w-4xl">
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-secondary/50 p-1 rounded-xl mb-8 w-fit">
-          {TABS.map(({ key, label, icon: Icon }) => (
+        <div className="flex flex-wrap gap-1 bg-secondary/50 p-1 rounded-xl mb-8 w-fit">
+          {TABS.map(({ key, label, icon: Icon, badge }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`relative flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === key
                   ? 'bg-card text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
@@ -716,6 +759,11 @@ export default function AdminPage() {
             >
               <Icon className="w-4 h-4" />
               {label}
+              {badge > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+                  {badge}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -759,6 +807,16 @@ export default function AdminPage() {
               Update order statuses here. Confirmed orders count toward sales revenue.
             </p>
             <OrdersPanel />
+          </div>
+        )}
+
+        {/* Messages tab */}
+        {activeTab === 'messages' && (
+          <div className="space-y-6">
+            <p className="text-sm text-muted-foreground">
+              Contact messages submitted through the website contact form.
+            </p>
+            <ContactManagement onUnreadChange={setUnreadMessages} />
           </div>
         )}
 

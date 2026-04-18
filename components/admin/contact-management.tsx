@@ -22,7 +22,7 @@ export interface ContactSubmission {
   category: 'general' | 'product' | 'order' | 'technical'
 }
 
-export function ContactManagement() {
+export function ContactManagement({ onUnreadChange }: { onUnreadChange?: (count: number) => void } = {}) {
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([])
   const [filteredSubmissions, setFilteredSubmissions] = useState<ContactSubmission[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -35,6 +35,10 @@ export function ContactManagement() {
     loadSubmissions()
   }, [])
 
+  const syncUnread = (list: ContactSubmission[]) => {
+    onUnreadChange?.(list.filter(s => s.status === 'new').length)
+  }
+
   const loadSubmissions = async () => {
     setIsLoading(true)
     try {
@@ -43,6 +47,7 @@ export function ContactManagement() {
       if (data.success) {
         setSubmissions(data.submissions)
         setFilteredSubmissions(data.submissions)
+        syncUnread(data.submissions)
       } else {
         toast.error('Failed to load contact submissions')
       }
@@ -63,7 +68,14 @@ export function ContactManagement() {
       })
       const result = await response.json()
       if (result.success) {
-        setSubmissions((prev) => prev.map((sub) => (sub.id === id ? { ...sub, status } : sub)))
+        setSubmissions((prev) => {
+          const updated = prev.map((sub) => (sub.id === id ? { ...sub, status } : sub))
+          syncUnread(updated)
+          return updated
+        })
+        if (selectedSubmission?.id === id) {
+          setSelectedSubmission(prev => prev ? { ...prev, status } : null)
+        }
         toast.success(`Submission marked as ${status}`)
       } else {
         toast.error('Failed to update submission status')
@@ -84,7 +96,11 @@ export function ContactManagement() {
       })
       const result = await response.json()
       if (result.success) {
-        setSubmissions((prev) => prev.filter((sub) => sub.id !== id))
+        setSubmissions((prev) => {
+          const updated = prev.filter((sub) => sub.id !== id)
+          syncUnread(updated)
+          return updated
+        })
         setSelectedSubmission(null)
         toast.success('Submission deleted successfully')
       } else {
