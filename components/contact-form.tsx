@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Mail, Phone, Send, User, Tag, MessageSquare, Clock, MapPin, CheckCircle } from 'lucide-react'
+import { Phone, Send, User, Tag, MessageSquare, Clock, MapPin, CheckCircle } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { DynamicContent } from './dynamic-content'
 
@@ -219,10 +219,6 @@ export function ContactForm() {
                 </h3>
                 <div className="space-y-4">
                   {[
-                    {
-                      icon: Mail, label: 'Email',
-                      value: <DynamicContent sectionId="contact-email" fallback="hello@zenistry.co.za" />
-                    },
                     {
                       icon: Phone, label: 'Phone',
                       value: <DynamicContent sectionId="contact-phone" fallback="+27 82 827 7990" />

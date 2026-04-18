@@ -18,8 +18,7 @@ export const EDITABLE_SECTIONS: Omit<ContentSection, 'value'>[] = [
   { id: 'contact-title', label: 'Section Title', category: 'Contact' },
   { id: 'contact-description', label: 'Section Description', multiline: true, category: 'Contact' },
   { id: 'contact-info-title', label: 'Info Box Title', category: 'Contact' },
-  { id: 'contact-email', label: 'Contact Email', category: 'Contact' },
-  { id: 'contact-phone', label: 'Contact Phone', category: 'Contact' },
+{ id: 'contact-phone', label: 'Contact Phone', category: 'Contact' },
   { id: 'contact-response-time', label: 'Response Time', category: 'Contact' },
   // About
   { id: 'about-subtitle', label: 'Subtitle', category: 'About' },
