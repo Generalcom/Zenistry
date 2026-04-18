@@ -122,12 +122,6 @@ export function Testimonials() {
             </p>
             <p className="text-xs tracking-[0.18em] uppercase text-muted-foreground font-medium">Avg Rating</p>
           </div>
-          <div>
-            <p className="font-serif mb-1" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)', fontWeight: 400, color: 'oklch(0.40 0.072 148)' }}>
-              10K+
-            </p>
-            <p className="text-xs tracking-[0.18em] uppercase text-muted-foreground font-medium">Happy Customers</p>
-          </div>
         </div>
       </div>
     </section>

@@ -92,12 +92,6 @@ export function Testimonials() {
               <p className="text-sm text-muted-foreground">Average Rating</p>
             </div>
           )}
-          <div className="space-y-2">
-            <p className="font-serif text-3xl lg:text-4xl font-semibold text-primary">
-              10K+
-            </p>
-            <p className="text-sm text-muted-foreground">Happy Customers</p>
-          </div>
         </div>
       </div>
     </section>
