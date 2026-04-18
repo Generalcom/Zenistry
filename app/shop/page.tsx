@@ -150,42 +150,44 @@ function ShopContent() {
                 {filteredProducts.map((product, i) => (
                   <div
                     key={product.id}
-                    className="group bg-card rounded-2xl border border-border/40 overflow-hidden card-lift flex flex-col"
+                    className="group bg-card rounded-2xl border border-border/40 overflow-hidden card-lift flex flex-col min-w-0"
                     style={{ animationDelay: `${i * 60}ms` }}
                   >
                     {/* Image */}
-                    <Link href={`/shop/${product.id}`} className="relative block overflow-hidden" style={{ aspectRatio: '1' }}>
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover transition-transform duration-600 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
+                    <Link href={`/shop/${product.id}`} className="block relative">
+                      <div className="relative w-full aspect-square overflow-hidden bg-secondary/20">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
 
-                      {/* Badge */}
-                      {product.badge && (
-                        <span
-                          className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-medium tracking-[0.16em] uppercase text-primary-foreground"
-                          style={{ background: 'oklch(0.40 0.072 148)', borderRadius: 0 }}
+                        {/* Badge */}
+                        {product.badge && (
+                          <span
+                            className="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-medium tracking-[0.16em] uppercase text-primary-foreground"
+                            style={{ background: 'oklch(0.40 0.072 148)', borderRadius: 0 }}
+                          >
+                            {product.badge}
+                          </span>
+                        )}
+
+                        {/* Wishlist */}
+                        <button
+                          onClick={(e) => { e.preventDefault(); toggleWishlist(product.id) }}
+                          className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
+                          style={{
+                            background: 'rgba(255,255,255,0.90)',
+                            backdropFilter: 'blur(8px)',
+                            color: wishlist.includes(product.id) ? 'oklch(0.40 0.072 148)' : 'rgba(0,0,0,0.4)',
+                          }}
+                          aria-label="Wishlist"
                         >
-                          {product.badge}
-                        </span>
-                      )}
-
-                      {/* Wishlist */}
-                      <button
-                        onClick={(e) => { e.preventDefault(); toggleWishlist(product.id) }}
-                        className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: 'rgba(255,255,255,0.90)',
-                          backdropFilter: 'blur(8px)',
-                          color: wishlist.includes(product.id) ? 'oklch(0.40 0.072 148)' : 'rgba(0,0,0,0.4)',
-                        }}
-                        aria-label="Wishlist"
-                      >
-                        <Heart className={`w-4 h-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
-                      </button>
+                          <Heart className={`w-4 h-4 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
+                        </button>
+                      </div>
                     </Link>
 
                     {/* Content */}
